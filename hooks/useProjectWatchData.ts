@@ -37,12 +37,7 @@ export function useProjectWatchData() {
             {
                 abi,
                 ...contract,
-                functionName: "wlBlockNumber",
-            },
-            {
-                abi,
-                ...contract,
-                functionName: "wlMinBalance",
+                functionName: "wlRoot",
             },
             {
                 abi,
@@ -61,10 +56,9 @@ export function useProjectWatchData() {
                 purchased: data[1],
                 ethPrice: data[2],
                 vestingDuration: data[3],
-                wlBlockNumber: data[4],
-                wlMinBalance: data[5],
-                isStarted: data[6],
-                isEnded: data[7],
+                wlRoot: data[4],
+                isStarted: data[5],
+                isEnded: data[6],
             }),
         },
     })

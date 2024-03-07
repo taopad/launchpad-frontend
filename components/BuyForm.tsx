@@ -16,6 +16,8 @@ import { useAccount, useSimulateContract, useWriteContract, useWaitForTransactio
 import { computeTokenAmount } from "@/lib/utils"
 import abi from "@/config/abi/LaunchpadAbi"
 
+const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
 const useSimulateBuy = (amount: bigint) => {
     const contract = useContract()
     const { isConnected, address } = useAccount()
@@ -33,7 +35,7 @@ const useSimulateBuy = (amount: bigint) => {
     const maxTokenBuy = projectStatic.data?.maxTokenBuy ?? 0n
     const hardcap = projectWatch.data?.hardcap ?? 0n
     const totalPurchased = projectWatch.data?.purchased ?? 0n
-    const wlBlockNumber = projectWatch.data?.wlBlockNumber ?? 0n
+    const wlRoot = projectWatch.data?.wlRoot ?? zero
     const isStarted = projectWatch.data?.isStarted ?? false
     const isEnded = projectWatch.data?.isEnded ?? true
     const userPurchased = user.data?.purchased ?? 0n
@@ -48,14 +50,14 @@ const useSimulateBuy = (amount: bigint) => {
         && projectStatic.isSuccess
         && balanceWatch.isSuccess
         && isStarted && !isEnded
-        && (wlBlockNumber === 0n || proofWatch.isSuccess)
+        && (wlRoot === zero || proofWatch.isSuccess)
         && amount > 0
         && tokenAmount > 0
         && balance >= amount
         && minTokenBuy <= tokenAmount
         && maxTokenBuy >= tokenAmount + userPurchased
         && hardcap >= tokenAmount + totalPurchased
-        && (wlBlockNumber === 0n || proof.length > 0)
+        && (wlRoot === zero || proof.length > 0)
 
     return useSimulateContract({
         abi,

@@ -1,14 +1,14 @@
 "use client"
 
 import { formatAmount } from "@/lib/utils"
-import { useProjectWatchData } from "@/hooks/useProjectWatchData"
+import { useWhitelist } from "@/hooks/useWhitelist"
 
 export function ProjectWhitelistMinBalance() {
-    const project = useProjectWatchData()
+    const whitelist = useWhitelist()
 
-    const minBalance = project.data?.wlMinBalance ?? 0n
+    const minBalance = whitelist.data?.minBalance ?? 0n
 
-    if (!project.isSuccess) {
+    if (!whitelist.isSuccess) {
         return <span></span>
     }
 

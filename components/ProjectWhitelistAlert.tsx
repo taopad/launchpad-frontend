@@ -6,12 +6,14 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { ProjectWhitelistMinBalance } from "@/components/ProjectWhitelistMinBalance"
 import { ProjectWhitelistBlockNumber } from "@/components/ProjectWhitelistBlockNumber"
 
+const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
 export function ProjectWhitelistAlert() {
     const project = useProjectWatchData()
 
-    const blockNumber = project.data?.wlBlockNumber ?? 0n
+    const root = project.data?.wlRoot ?? zero
 
-    if (!project.isSuccess || blockNumber === 0n) {
+    if (!project.isSuccess || root === zero) {
         return null
     }
 

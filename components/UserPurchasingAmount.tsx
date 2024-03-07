@@ -10,6 +10,8 @@ import { useProjectStaticData } from "@/hooks/useProjectStaticData"
 import { useWatchNativeBalance } from "@/hooks/useWatchNativeBalance"
 import { computeTokenAmount } from "@/lib/utils"
 
+const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
 export function UserPurchasingAmount({ amount }: { amount: bigint }) {
     const user = useUserWatchData()
     const token = useTokenStaticData()
@@ -24,7 +26,7 @@ export function UserPurchasingAmount({ amount }: { amount: bigint }) {
     const maxTokenBuy = projectStatic.data?.maxTokenBuy ?? 0n
     const hardcap = projectWatch.data?.hardcap ?? 0n
     const totalPurchased = projectWatch.data?.purchased ?? 0n
-    const wlBlockNumber = projectWatch.data?.wlBlockNumber ?? 0n
+    const wlRoot = projectWatch.data?.wlRoot ?? zero
     const isStarted = projectWatch.data?.isStarted ?? false
     const isEnded = projectWatch.data?.isEnded ?? true
     const userPurchased = user.data?.purchased ?? 0n
@@ -36,13 +38,13 @@ export function UserPurchasingAmount({ amount }: { amount: bigint }) {
         && token.isSuccess
         && projectWatch.isSuccess
         && projectStatic.isSuccess
-        && (wlBlockNumber === 0n || proofWatch.isSuccess)
+        && (wlRoot === zero || proofWatch.isSuccess)
 
     if (!loaded) {
         return <span>-</span>
     }
 
-    if (wlBlockNumber > 0 && proof.length === 0) {
+    if (wlRoot !== zero && proof.length === 0) {
         return (
             <span className="text-red-900">
                 Not whitelisted
