@@ -6,9 +6,11 @@ import { useContract } from "@/hooks/useContract"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 
 export function ProjectCoverImage() {
-    const { chainId, address } = useContract()
-
+    const contract = useContract()
     const [exists, setExists] = useState<boolean>(false)
+
+    const chainId = contract.chainId ?? 0
+    const address = contract.address ?? "0x"
 
     const url = `https://raw.githubusercontent.com/taopad/launchpad-metadata/master/${chainId}/${address}/cover.png`
 

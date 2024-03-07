@@ -1,22 +1,23 @@
 "use client"
 
-import { WagmiConfig } from "wagmi"
+import { useState } from "react"
+import { WagmiProvider, cookieToInitialState } from "wagmi"
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit"
-import { chains, getWagmiConfig } from "@/config/wallet"
-import { notFound } from "next/navigation"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { config as allChainConfig, getConfig } from "@/config/wallet"
 
-export function WalletProvider({ chainId, children }: { chainId: number, children: React.ReactNode }) {
-    const wagmiConfig = getWagmiConfig(chainId)
-
-    if (wagmiConfig === undefined) {
-        return notFound()
-    }
+export function WalletProvider({ chainId, cookie, children }: { chainId?: number, cookie: string | null, children: React.ReactNode }) {
+    const config = chainId === undefined ? allChainConfig : getConfig(chainId)
+    const initialState = cookieToInitialState(config, cookie)
+    const [queryClient] = useState(() => new QueryClient())
 
     return (
-        <WagmiConfig config={wagmiConfig}>
-            <RainbowKitProvider chains={chains}>
-                {children}
-            </RainbowKitProvider>
-        </WagmiConfig>
+        <WagmiProvider config={config} initialState={initialState}>
+            <QueryClientProvider client={queryClient}>
+                <RainbowKitProvider>
+                    {children}
+                </RainbowKitProvider>
+            </QueryClientProvider>
+        </WagmiProvider>
     )
 }

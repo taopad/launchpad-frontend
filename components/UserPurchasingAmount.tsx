@@ -3,35 +3,33 @@
 import { formatUnits } from "viem"
 import { TokenSymbol } from "@/components/TokenSymbol"
 import { useUserProof } from "@/hooks/useUserProof"
-import { useHasMounted } from "@/hooks/useHasMounted"
-import { useWatchBalance } from "@/hooks/useWatchBalance"
 import { useUserWatchData } from "@/hooks/useUserWatchData"
 import { useTokenStaticData } from "@/hooks/useTokenStaticData"
 import { useProjectWatchData } from "@/hooks/useProjectWatchData"
 import { useProjectStaticData } from "@/hooks/useProjectStaticData"
+import { useWatchNativeBalance } from "@/hooks/useWatchNativeBalance"
 import { computeTokenAmount } from "@/lib/utils"
 
 export function UserPurchasingAmount({ amount }: { amount: bigint }) {
     const user = useUserWatchData()
     const token = useTokenStaticData()
     const proofWatch = useUserProof()
-    const balanceWatch = useWatchBalance()
     const projectWatch = useProjectWatchData()
+    const balanceWatch = useWatchNativeBalance()
     const projectStatic = useProjectStaticData()
-    const hasMounted = useHasMounted()
 
     const proof = proofWatch.data?.proof ?? []
     const balance = balanceWatch.data?.value ?? 0n
-    const minTokenBuy = projectStatic.data?.minTokenBuy.result ?? 0n
-    const maxTokenBuy = projectStatic.data?.maxTokenBuy.result ?? 0n
-    const hardcap = projectWatch.data?.hardcap.result ?? 0n
-    const totalPurchased = projectWatch.data?.purchased.result ?? 0n
-    const wlBlockNumber = projectWatch.data?.wlBlockNumber.result ?? 0n
-    const isStarted = projectWatch.data?.isStarted.result ?? false
-    const isEnded = projectWatch.data?.isEnded.result ?? true
-    const userPurchased = user.data?.purchased.result ?? 0n
-    const ethPrice = projectWatch.data?.ethPrice.result ?? 0n
-    const decimals = token.data?.decimals.result ?? 0
+    const minTokenBuy = projectStatic.data?.minTokenBuy ?? 0n
+    const maxTokenBuy = projectStatic.data?.maxTokenBuy ?? 0n
+    const hardcap = projectWatch.data?.hardcap ?? 0n
+    const totalPurchased = projectWatch.data?.purchased ?? 0n
+    const wlBlockNumber = projectWatch.data?.wlBlockNumber ?? 0n
+    const isStarted = projectWatch.data?.isStarted ?? false
+    const isEnded = projectWatch.data?.isEnded ?? true
+    const userPurchased = user.data?.purchased ?? 0n
+    const ethPrice = projectWatch.data?.ethPrice ?? 0n
+    const decimals = token.data?.decimals ?? 0
     const tokenAmount = computeTokenAmount(amount, ethPrice, decimals)
 
     const loaded = user.isSuccess
@@ -40,7 +38,7 @@ export function UserPurchasingAmount({ amount }: { amount: bigint }) {
         && projectStatic.isSuccess
         && (wlBlockNumber === 0n || proofWatch.isSuccess)
 
-    if (!hasMounted || !loaded) {
+    if (!loaded) {
         return <span>-</span>
     }
 

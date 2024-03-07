@@ -3,7 +3,6 @@ import { Chain } from "viem";
 export const testnet = {
     id: 14608,
     name: 'TaoPad testnet',
-    network: 'mainnet fork',
     nativeCurrency: { name: 'BB ETH', symbol: 'BBETH', decimals: 18 },
     rpcUrls: {
         default: {

@@ -1,5 +1,5 @@
-import { useState, useCallback } from "react";
-import { formatUnits, parseUnits } from "viem";
+import { useState, useCallback } from "react"
+import { formatUnits, parseUnits } from "viem"
 
 // hook to keep an input field in sync with a Bigint
 type UseBigintInputState = {

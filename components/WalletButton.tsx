@@ -1,39 +1,42 @@
 "use client"
 
-import { useAccount, useNetwork } from "wagmi"
+import { useAccount } from "wagmi"
 import { useAccountModal, useChainModal, useConnectModal } from "@rainbow-me/rainbowkit"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/Spinner"
-import { useHasMounted } from "@/hooks/useHasMounted"
 
 export function WalletButton() {
-    const { chain } = useNetwork()
-    const { isConnected, address } = useAccount()
     const { openChainModal } = useChainModal()
     const { openConnectModal } = useConnectModal()
     const { openAccountModal } = useAccountModal()
-    const hasMounted = useHasMounted()
+    const { isConnected, isConnecting, isReconnecting, chain, address } = useAccount()
 
-    if (!hasMounted) return (
-        <Button className="w-48" disabled>
-            <Spinner /> Connect wallet
-        </Button>
-    )
+    if (isConnecting || isReconnecting) {
+        return (
+            <Button className="w-40 lg:w-48" disabled>
+                <Spinner /> Connecting
+            </Button>
+        )
+    }
 
-    if (!isConnected) return (
-        <Button className="w-48" onClick={openConnectModal}>
-            Connect wallet
-        </Button>
-    )
+    if (!isConnected) {
+        return (
+            <Button className="w-40 lg:w-48" onClick={openConnectModal}>
+                Connect wallet
+            </Button>
+        )
+    }
 
-    if (chain?.unsupported) return (
-        <Button className="w-48" variant="destructive" onClick={openChainModal}>
-            Wrong chain
-        </Button>
-    )
+    if (chain === undefined) {
+        return (
+            <Button className="w-40 lg:w-48" variant="destructive" onClick={openChainModal}>
+                Wrong chain
+            </Button>
+        )
+    }
 
     return (
-        <Button className="w-48" onClick={openAccountModal}>
+        <Button className="w-40 lg:w-48" onClick={openAccountModal}>
             {formatAddress(address)}
         </Button>
     )

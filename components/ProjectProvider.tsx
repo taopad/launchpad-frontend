@@ -3,13 +3,13 @@
 import { createContext } from "react"
 
 type ProjectState = {
-    chainId: number
-    address: `0x${string}`
+    chainId: number | undefined
+    address: `0x${string}` | undefined
 }
 
 export const ProjectContext = createContext<ProjectState>({
-    chainId: 0,
-    address: "0x",
+    chainId: undefined,
+    address: undefined,
 })
 
 export function ProjectProvider({ chainId, address, children }: { chainId: number, address: `0x${string}`, children: React.ReactNode }) {

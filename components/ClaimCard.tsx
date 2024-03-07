@@ -1,12 +1,12 @@
-import { Separator } from "@/components/ui/separator"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { ClaimForm } from "@/components/ClaimForm"
+import { Separator } from "@/components/ui/separator"
 import { TokenSymbol } from "@/components/TokenSymbol"
 import { UserProgressBar } from "@/components/UserProgressBar"
 import { UserClaimedAmount } from "@/components/UserClaimedAmount"
 import { ProjectReleaseDate } from "@/components/ProjectReleaseDate"
 import { UserPurchasedAmount } from "@/components/UserPurchasedAmount"
 import { ProjectVestingDuration } from "@/components/ProjectVestingDuration"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 export function ClaimCard() {
     return (

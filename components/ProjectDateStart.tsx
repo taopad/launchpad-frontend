@@ -1,16 +1,16 @@
 "use client"
 
-import { useHasMounted } from "@/hooks/useHasMounted"
 import { useProjectStaticData } from "@/hooks/useProjectStaticData"
 import { formatTimestamp } from "@/lib/utils"
 
 export function ProjectDateStart() {
     const project = useProjectStaticData()
-    const hasMounted = useHasMounted()
 
-    if (!hasMounted) return <span></span>
+    const timestamp = project.data?.startDate ?? 0n
 
-    const timestamp = project.data?.startDate.result ?? 0n
+    if (!project.isSuccess) {
+        return <span></span>
+    }
 
     return <span>{formatTimestamp(timestamp)}</span>
 }

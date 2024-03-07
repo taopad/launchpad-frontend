@@ -1,6 +1,5 @@
-import { Separator } from "@/components/ui/separator"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { BuyForm } from "@/components/BuyForm"
+import { Separator } from "@/components/ui/separator"
 import { TokenSymbol } from "@/components/TokenSymbol"
 import { TokenEthPrice } from "@/components/TokenEthPrice"
 import { ProjectHardcap } from "@/components/ProjectHardcap"
@@ -8,6 +7,7 @@ import { ProjectDateEnd } from "@/components/ProjectDateEnd"
 import { ProjectDateStart } from "@/components/ProjectDateStart"
 import { ProjectProgressBar } from "@/components/ProjectProgressBar"
 import { ProjectPurchasedAmount } from "@/components/ProjectPurchasedAmount"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 export function BuyCard() {
     return (

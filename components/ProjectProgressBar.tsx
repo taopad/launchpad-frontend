@@ -9,8 +9,8 @@ export function ProjectProgressBar() {
     const project = useProjectWatchData()
     const [progress, setProgress] = useState(0)
 
-    const hardcap = project.data?.hardcap.result ?? 0n
-    const purchased = project.data?.purchased.result ?? 0n
+    const hardcap = project.data?.hardcap ?? 0n
+    const purchased = project.data?.purchased ?? 0n
 
     useEffect(() => {
         const percent = hardcap > 0 ? Number((purchased * 100n) / hardcap) : 0

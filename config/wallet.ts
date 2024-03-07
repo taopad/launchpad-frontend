@@ -1,66 +1,73 @@
 import "@rainbow-me/rainbowkit/styles.css"
 
-import { configureChains, createConfig } from "wagmi"
-import { mainnet } from "wagmi/chains"
-import { publicProvider } from "wagmi/providers/public"
-import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
-import { getDefaultWallets, connectorsForWallets } from "@rainbow-me/rainbowkit"
-import { injectedWallet, trustWallet, rabbyWallet } from "@rainbow-me/rainbowkit/wallets"
+import { Chain, mainnet } from "wagmi/chains"
 import { testnet } from "@/config/testnet"
+import { createConfig, createStorage, cookieStorage, http, fallback } from "wagmi"
+import { connectorsForWallets } from "@rainbow-me/rainbowkit"
+import {
+    injectedWallet,
+    rainbowWallet,
+    coinbaseWallet,
+    walletConnectWallet,
+    trustWallet,
+    rabbyWallet,
+} from "@rainbow-me/rainbowkit/wallets"
 
-// Taopad project id.
+const appName = "Taopad launchpad"
 const projectId = "031d4ad6ce63b830ab346fb92b96f328"
-
-// chain list.
-export const chains = [mainnet, testnet]
-
-// check if we are in dev env.
 const isDev = process.env.NODE_ENV === "development"
 
-// rpc for supported chains.
-const rpcs: Record<number, string> = {
+const chains = [mainnet, testnet]
+
+const rpcs = {
     [mainnet.id]: isDev
         ? "https://rpc.ankr.com/eth"
         : "https://eth-mainnet.g.alchemy.com/v2/oW_Y3js1QPWpFXnCIQm-z56vysAdoppY",
     [testnet.id]: testnet.rpcUrls.public.http[0]
 }
 
-const selectChain = (chainId: number) => {
-    return chains.filter(chain => chain.id === chainId).shift()
-}
-
-export const getWagmiConfig = (chainId: number) => {
-    const chain = selectChain(chainId)
-
-    if (chain === undefined) return undefined
-
-    const { chains, publicClient } = configureChains([chain], [
-        jsonRpcProvider({
-            rpc: ({ id }) => ({ http: rpcs[id] })
-        }),
-        publicProvider(),
-    ])
-
-    const { connectors } = getDefaultWallets({
-        appName: "TaoPad launchpad",
-        projectId,
-        chains,
-    })
-
-    const moreConnectors = connectorsForWallets([
+const connectors = connectorsForWallets(
+    [
         {
-            groupName: 'More wallets',
+            groupName: 'Wallets',
             wallets: [
-                injectedWallet({ chains }),
-                rabbyWallet({ chains }),
-                trustWallet({ projectId, chains }),
+                injectedWallet,
+                rainbowWallet,
+                coinbaseWallet,
+                walletConnectWallet,
+                trustWallet,
+                rabbyWallet,
             ],
         },
-    ])
+    ],
+    { appName, projectId }
+)
+
+export const config = createConfig({
+    ssr: true,
+    storage: createStorage({ storage: cookieStorage, key: "wagmi-all" }),
+    connectors,
+    chains: [mainnet],
+    transports: {
+        [mainnet.id]: fallback([http(rpcs[mainnet.id]), http()]),
+    },
+})
+
+export const getConfig = (chainId: number) => {
+    const chain = chains.find(chain => chain.id === chainId)
+
+    if (chain === undefined) {
+        throw new Error(`chain id ${chainId} is not supported`)
+    }
 
     return createConfig({
-        autoConnect: true,
-        connectors: () => [...connectors(), ...moreConnectors()],
-        publicClient
+        ssr: true,
+        storage: createStorage({ storage: cookieStorage, key: `wagmi-${chainId}` }),
+        connectors,
+        chains: [chain],
+        transports: {
+            [mainnet.id]: fallback([http(rpcs[mainnet.id]), http()]),
+            [testnet.id]: http(),
+        },
     })
 }

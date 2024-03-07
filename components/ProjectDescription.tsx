@@ -5,9 +5,11 @@ import { useState, useEffect } from "react"
 import { useContract } from "@/hooks/useContract"
 
 export function ProjectDescription() {
-    const { chainId, address } = useContract()
-
+    const contract = useContract()
     const [markdown, setMarkdown] = useState<string>()
+
+    const chainId = contract.chainId ?? 0
+    const address = contract.address ?? "0x"
 
     const url = `https://raw.githubusercontent.com/taopad/launchpad-metadata/master/${chainId}/${address}/description.md`
 

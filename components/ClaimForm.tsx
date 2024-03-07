@@ -1,65 +1,56 @@
 "use client"
 
-import { useAccount, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from "wagmi"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/Spinner"
 import { TokenSymbol } from "@/components/TokenSymbol"
 import { UserClaimableAmount } from "@/components/UserClaimableAmount"
 import { useContract } from "@/hooks/useContract"
 import { useUserWatchData } from "@/hooks/useUserWatchData"
+import { useAccount, useSimulateContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
+import abi from "@/config/abi/LaunchpadAbi"
 
-function useClaim() {
+function useSimulateClaim() {
     const contract = useContract()
     const { isConnected, address } = useAccount()
 
     const user = useUserWatchData()
 
-    const claimable = user.data?.claimable.result ?? 0n
+    const claimable = user.data?.claimable ?? 0n
 
     const enabled = isConnected
         && user.isSuccess
         && claimable > 0
 
-    const prepare = usePrepareContractWrite({
-        enabled,
+    return useSimulateContract({
+        abi,
         ...contract,
         account: address,
         functionName: "claimTokens",
-        scopeKey: address + claimable.toString(), // cache mystery?
+        scopeKey: address,
+        query: { enabled },
     })
-
-    const action = useContractWrite(prepare.config)
-
-    const wait = useWaitForTransaction({ hash: action.data?.hash })
-
-    return { prepare, action, wait }
 }
 
 export function ClaimForm() {
-    const { prepare, action, wait } = useClaim()
+    const { chainId } = useContract()
+    const { data, isLoading } = useSimulateClaim()
+    const { data: hash, isPending, writeContract } = useWriteContract()
+    const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash, chainId, confirmations: 1 })
 
-    const loading = prepare.isLoading || action.isLoading || wait.isLoading
-    const disabled = loading || !prepare.isSuccess || !action.write
+    const loading = isLoading || isPending || isConfirming
+    const disabled = loading || !Boolean(data?.request)
 
     return (
         <form className="flex flex-col gap-4" onSubmit={e => {
             e.preventDefault()
-            action.write?.()
+            writeContract(data!.request)
         }}>
-            <SubmitButton loading={loading} disabled={disabled}>
-                Claim
-            </SubmitButton>
+            <Button type="submit" variant="secondary" className="w-full" disabled={disabled}>
+                <Spinner loading={loading} /> Claim
+            </Button>
             <p className="muted">
                 Claimable tokens: <UserClaimableAmount /> <TokenSymbol />
             </p>
         </form>
-    )
-}
-
-function SubmitButton({ loading, disabled, children }: { loading: boolean, disabled: boolean, children: string }) {
-    return (
-        <Button type="submit" variant="secondary" className="w-full" disabled={disabled}>
-            <Spinner loading={loading} /> {children}
-        </Button>
     )
 }

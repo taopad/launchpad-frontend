@@ -9,8 +9,8 @@ export function UserProgressBar() {
     const user = useUserWatchData()
     const [progress, setProgress] = useState(0)
 
-    const claimed = user.data?.claimed.result ?? 0n
-    const purchased = user.data?.purchased.result ?? 0n
+    const claimed = user.data?.claimed ?? 0n
+    const purchased = user.data?.purchased ?? 0n
 
     useEffect(() => {
         const percent = purchased > 0 ? Number((claimed * 100n) / purchased) : 0

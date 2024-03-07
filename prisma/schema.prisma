@@ -17,8 +17,7 @@ model distributions {
   distributions_proofs distributions_proofs[]
 
   @@id([chain_id, token, block_number], map: "distributions_pk")
-  @@index([block_number], map: "distributions_block_number_index")
-  @@index([token], map: "distributions_token_index")
+  @@index([chain_id, token], map: "distributions_chain_id_token_index")
 }
 
 model distributions_proofs {
@@ -32,41 +31,29 @@ model distributions_proofs {
   distributions distributions @relation(fields: [chain_id, token, block_number], references: [chain_id, token, block_number], onDelete: NoAction, onUpdate: NoAction, map: "distributions_proofs_distributions_fk")
 
   @@id([chain_id, token, block_number, address], map: "distributions_proofs_pk")
-  @@index([address], map: "distributions_proofs_address_index")
-  @@index([block_number], map: "distributions_proofs_block_number_index")
-  @@index([token], map: "distributions_proofs_token_index")
-}
-
-model snapshots {
-  block_number      BigInt
-  address           String              @db.Char(42)
-  balance           String              @db.VarChar
-  is_contract       Boolean
-  is_blacklisted    Boolean
-  whitelists_proofs whitelists_proofs[]
-
-  @@id([block_number, address], map: "snapshots_pk")
-  @@index([address], map: "snapshots_address_index")
+  @@index([chain_id, token, address], map: "distributions_proofs_chain_id_token_address_index")
+  @@index([chain_id, token, block_number], map: "distributions_proofs_chain_id_token_block_number_index")
 }
 
 model whitelists {
-  block_number      BigInt
-  min_amount        String              @db.VarChar
+  chain_id          Int
+  launchpad         String              @db.Char(42)
   root              String              @db.Char(66)
+  block_number      BigInt              @default(0)
+  min_balance       String              @default("0") @db.VarChar
   whitelists_proofs whitelists_proofs[]
 
-  @@id([block_number, min_amount], map: "whitelists_pk")
+  @@id([chain_id, launchpad], map: "whitelists_pk")
 }
 
 model whitelists_proofs {
-  block_number BigInt
-  min_amount   String     @db.VarChar
-  address      String     @db.Char(42)
-  balance      String     @db.VarChar
-  proof        String[]   @db.Char(66)
-  snapshots    snapshots  @relation(fields: [block_number, address], references: [block_number, address], onDelete: NoAction, onUpdate: NoAction, map: "whitelists_proofs_snapshots_fk")
-  whitelists   whitelists @relation(fields: [block_number, min_amount], references: [block_number, min_amount], onDelete: NoAction, onUpdate: NoAction, map: "whitelists_proofs_whitelists_fk")
+  chain_id   Int
+  launchpad  String     @db.Char(42)
+  address    String     @db.Char(42)
+  proof      String[]   @db.Char(66)
+  balance    String     @default("0") @db.VarChar
+  whitelists whitelists @relation(fields: [chain_id, launchpad], references: [chain_id, launchpad], onDelete: NoAction, onUpdate: NoAction, map: "whitelists_proofs_whitelists_fk")
 
-  @@id([block_number, min_amount, address], map: "whitelists_proofs_pk")
-  @@index([address], map: "whitelists_proofs_address_index")
+  @@id([chain_id, launchpad, address], map: "whitelists_proofs_pk")
+  @@index([chain_id, launchpad], map: "whitelists_proofs_chain_id_launchpad_index")
 }

@@ -1,16 +1,19 @@
-import { Navbar } from "@/components/Navbar";
-import { WalletProvider } from "@/components/WalletProvider";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import Link from "next/link";
-import { ProjectProvider } from "@/components/ProjectProvider";
-import { ProjectName } from "@/components/ProjectName";
-import { ProjectTokenAddress } from "@/components/ProjectTokenAddress";
-import { ProjectCoverImage } from "@/components/ProjectCoverImage";
+import Link from "next/link"
+import { headers } from "next/headers"
+import { Navbar } from "@/components/Navbar"
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { ProjectName } from "@/components/ProjectName"
+import { WalletProvider } from "@/components/WalletProvider"
+import { ProjectProvider } from "@/components/ProjectProvider"
+import { ProjectCoverImage } from "@/components/ProjectCoverImage"
+import { ProjectTokenAddress } from "@/components/ProjectTokenAddress"
 
 export default function Home() {
+    const cookie = headers().get("cookie")
+
     return (
-        <WalletProvider chainId={1}>
+        <WalletProvider cookie={cookie}>
             <div className="flex flex-col gap-8">
                 <Navbar />
                 <div className="flex flex-col gap-8 px-8 max-w-[1024px] w-full mx-auto">
