@@ -1,18 +1,24 @@
 "use client"
 
 import { formatUnits } from "viem"
-import { TokenSymbol } from "@/components/TokenSymbol"
+import { useAccount } from "wagmi"
 import { useUserData } from "@/hooks/useUserData"
 import { useTokenData } from "@/hooks/useTokenData"
 import { useUserProof } from "@/hooks/useUserProof"
 import { useNativeBalance } from "@/hooks/useNativeBalance"
 import { useProjectWatchData } from "@/hooks/useProjectWatchData"
 import { useProjectStaticData } from "@/hooks/useProjectStaticData"
+import { useConnectModal } from "@rainbow-me/rainbowkit"
+import { Spinner } from "@/components/Spinner"
+import { TokenSymbol } from "@/components/TokenSymbol"
 import { computeTokenAmount } from "@/lib/utils"
 
 const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 export function UserPurchasingAmount({ amount }: { amount: bigint }) {
+    const { isConnected } = useAccount()
+    const { openConnectModal } = useConnectModal()
+
     const hooks = {
         user: useUserData(),
         token: useTokenData(),
@@ -38,14 +44,19 @@ export function UserPurchasingAmount({ amount }: { amount: bigint }) {
     const decimals = hooks.token.data?.decimals ?? 0
     const tokenAmount = computeTokenAmount(amount, ethPrice, decimals)
 
-    const loaded = hooks.token.isSuccess
+    const loaded = isConnected
+        && hooks.token.isSuccess
         && hooks.user.isSuccess
         && hooks.project.watch.isSuccess
         && hooks.project.static.isSuccess
         && (wlRoot === zero || hooks.proof.isSuccess)
 
+    if (!isConnected) {
+        return <a href="#" onClick={openConnectModal}>Connect wallet</a>
+    }
+
     if (!loaded) {
-        return <span>-</span>
+        return <span><Spinner /></span>
     }
 
     if (wlRoot !== zero && proof.length === 0) {
