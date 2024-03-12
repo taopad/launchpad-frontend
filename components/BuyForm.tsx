@@ -55,6 +55,7 @@ const useSimulateBuy = (amount: bigint) => {
         && hooks.balance.isSuccess
         && (wlRoot === zero || hooks.proof.isSuccess)
         && !hooks.user.isRefetching
+        && !hooks.balance.isRefetching
         && amount > 0
         && tokenAmount > 0
         && balance >= amount
@@ -78,6 +79,7 @@ const useSimulateBuy = (amount: bigint) => {
 
 export function BuyForm() {
     const user = useUserData()
+    const balance = useNativeBalance()
     const amount = useBigintInput(0n)
 
     const { chainId } = useContract()
@@ -94,6 +96,7 @@ export function BuyForm() {
             writeContract(data!.request, {
                 onSuccess: () => {
                     user.refetch()
+                    balance.refetch()
                     amount.reset()
                 }
             })
