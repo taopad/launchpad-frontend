@@ -3,7 +3,7 @@ import { useReadContracts } from "wagmi"
 import { useContract } from "./useContract"
 import { useProjectStaticData } from "./useProjectStaticData"
 
-export function useTokenStaticData() {
+export function useTokenData() {
     const { chainId } = useContract()
     const project = useProjectStaticData()
 

@@ -2,43 +2,47 @@
 
 import { formatUnits } from "viem"
 import { TokenSymbol } from "@/components/TokenSymbol"
+import { useUserData } from "@/hooks/useUserData"
+import { useTokenData } from "@/hooks/useTokenData"
 import { useUserProof } from "@/hooks/useUserProof"
-import { useUserWatchData } from "@/hooks/useUserWatchData"
-import { useTokenStaticData } from "@/hooks/useTokenStaticData"
+import { useNativeBalance } from "@/hooks/useNativeBalance"
 import { useProjectWatchData } from "@/hooks/useProjectWatchData"
 import { useProjectStaticData } from "@/hooks/useProjectStaticData"
-import { useWatchNativeBalance } from "@/hooks/useWatchNativeBalance"
 import { computeTokenAmount } from "@/lib/utils"
 
 const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 export function UserPurchasingAmount({ amount }: { amount: bigint }) {
-    const user = useUserWatchData()
-    const token = useTokenStaticData()
-    const proofWatch = useUserProof()
-    const projectWatch = useProjectWatchData()
-    const balanceWatch = useWatchNativeBalance()
-    const projectStatic = useProjectStaticData()
+    const hooks = {
+        user: useUserData(),
+        token: useTokenData(),
+        proof: useUserProof(),
+        balance: useNativeBalance(),
+        project: {
+            watch: useProjectWatchData(),
+            static: useProjectStaticData(),
+        },
+    }
 
-    const proof = proofWatch.data?.proof ?? []
-    const balance = balanceWatch.data?.value ?? 0n
-    const minTokenBuy = projectStatic.data?.minTokenBuy ?? 0n
-    const maxTokenBuy = projectStatic.data?.maxTokenBuy ?? 0n
-    const hardcap = projectWatch.data?.hardcap ?? 0n
-    const totalPurchased = projectWatch.data?.purchased ?? 0n
-    const wlRoot = projectWatch.data?.wlRoot ?? zero
-    const isStarted = projectWatch.data?.isStarted ?? false
-    const isEnded = projectWatch.data?.isEnded ?? true
-    const userPurchased = user.data?.purchased ?? 0n
-    const ethPrice = projectWatch.data?.ethPrice ?? 0n
-    const decimals = token.data?.decimals ?? 0
+    const proof = hooks.proof.data?.proof ?? []
+    const balance = hooks.balance.data?.value ?? 0n
+    const minTokenBuy = hooks.project.static.data?.minTokenBuy ?? 0n
+    const maxTokenBuy = hooks.project.static.data?.maxTokenBuy ?? 0n
+    const wlRoot = hooks.project.watch.data?.wlRoot ?? zero
+    const hardcap = hooks.project.watch.data?.hardcap ?? 0n
+    const ethPrice = hooks.project.watch.data?.ethPrice ?? 0n
+    const isStarted = hooks.project.watch.data?.isStarted ?? false
+    const isEnded = hooks.project.watch.data?.isEnded ?? true
+    const totalPurchased = hooks.project.watch.data?.purchased ?? 0n
+    const userPurchased = hooks.user.data?.purchased ?? 0n
+    const decimals = hooks.token.data?.decimals ?? 0
     const tokenAmount = computeTokenAmount(amount, ethPrice, decimals)
 
-    const loaded = user.isSuccess
-        && token.isSuccess
-        && projectWatch.isSuccess
-        && projectStatic.isSuccess
-        && (wlRoot === zero || proofWatch.isSuccess)
+    const loaded = hooks.token.isSuccess
+        && hooks.user.isSuccess
+        && hooks.project.watch.isSuccess
+        && hooks.project.static.isSuccess
+        && (wlRoot === zero || hooks.proof.isSuccess)
 
     if (!loaded) {
         return <span>-</span>

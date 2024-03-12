@@ -1,12 +1,12 @@
 "use client"
 
 import { formatUnits } from "viem"
-import { useTokenStaticData } from "@/hooks/useTokenStaticData"
+import { useTokenData } from "@/hooks/useTokenData"
 import { useProjectWatchData } from "@/hooks/useProjectWatchData"
 import { formatAmount } from "@/lib/utils"
 
 export function ProjectPurchasedAmount() {
-    const token = useTokenStaticData()
+    const token = useTokenData()
     const project = useProjectWatchData()
 
     const amount = project.data?.purchased ?? 0n

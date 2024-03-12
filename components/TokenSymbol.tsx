@@ -1,9 +1,9 @@
 "use client"
 
-import { useTokenStaticData } from "@/hooks/useTokenStaticData"
+import { useTokenData } from "@/hooks/useTokenData"
 
 export function TokenSymbol() {
-    const token = useTokenStaticData()
+    const token = useTokenData()
 
     const symbol = token.data?.symbol ?? ""
 

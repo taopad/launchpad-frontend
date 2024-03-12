@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useAccount, useBlockNumber, useBalance } from "wagmi"
 import { useContract } from "./useContract"
 
-export function useWatchNativeBalance() {
+export function useNativeBalance() {
     const { chainId } = useContract()
     const { address } = useAccount()
 

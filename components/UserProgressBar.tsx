@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react"
 
 import { Progress } from "@/components/ui/progress"
-import { useUserWatchData } from "@/hooks/useUserWatchData"
+import { useUserData } from "@/hooks/useUserData"
 
 export function UserProgressBar() {
-    const user = useUserWatchData()
+    const user = useUserData()
     const [progress, setProgress] = useState(0)
 
     const claimed = user.data?.claimed ?? 0n
