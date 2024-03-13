@@ -110,7 +110,7 @@ export function BuyForm() {
                 />
                 <MaxButton setAmount={amount.setValue} />
                 <Button type="submit" variant="secondary" disabled={disabled}>
-                    <Spinner loading={loading} /> purchase
+                    <Spinner loading={loading} /> Purchase
                 </Button>
             </div>
             <p className="muted">
