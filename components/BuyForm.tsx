@@ -13,7 +13,7 @@ import { useProjectWatchData } from "@/hooks/useProjectWatchData"
 import { useProjectStaticData } from "@/hooks/useProjectStaticData"
 import { UserPurchasingAmount } from "@/components/UserPurchasingAmount"
 import { useAccount, useSimulateContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
-import { computeTokenAmount } from "@/lib/utils"
+import { computeTokenAmount, computeEthAmount } from "@/lib/utils"
 import abi from "@/config/abi/LaunchpadAbi"
 
 const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
@@ -72,7 +72,6 @@ const useSimulateBuy = (amount: bigint) => {
         account: address,
         functionName: "buyTokens",
         args: [proof],
-        scopeKey: address,
         query: { enabled },
     })
 }
@@ -109,6 +108,7 @@ export function BuyForm() {
                     onChange={e => amount.setValueStr(e.target.value.trim())}
                     min={0}
                 />
+                <MaxButton setAmount={amount.setValue} />
                 <Button type="submit" variant="secondary" disabled={disabled}>
                     <Spinner loading={loading} /> purchase
                 </Button>
@@ -117,5 +117,42 @@ export function BuyForm() {
                 <UserPurchasingAmount amount={amount.value} />
             </p>
         </form>
+    )
+}
+
+function MaxButton({ setAmount }: { setAmount: (amount: bigint) => void }) {
+    const user = useUserData()
+    const token = useTokenData()
+    const projectWatch = useProjectWatchData()
+    const projectStatic = useProjectStaticData()
+    const { isConnected } = useAccount()
+
+    const purchased = user.data?.purchased ?? 0n
+    const ethPrice = projectWatch.data?.ethPrice ?? 0n
+    const minTokenBuy = projectStatic.data?.minTokenBuy ?? 0n
+    const maxTokenBuy = projectStatic.data?.maxTokenBuy ?? 0n
+    const decimals = token.data?.decimals ?? 0
+
+    const remaining = maxTokenBuy - purchased
+
+    const maxTokenBuyEth = computeEthAmount(remaining, ethPrice, decimals)
+
+    const disabled = !isConnected
+        || !user.isSuccess
+        || !token.isSuccess
+        || !projectWatch.isSuccess
+        || !projectStatic.isSuccess
+        || user.isRefetching
+        || remaining < minTokenBuy
+
+    return (
+        <Button
+            type="button"
+            variant="secondary"
+            disabled={disabled}
+            onClick={() => setAmount(maxTokenBuyEth)}
+        >
+            Max
+        </Button>
     )
 }
