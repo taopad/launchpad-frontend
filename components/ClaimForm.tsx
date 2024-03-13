@@ -27,7 +27,6 @@ function useSimulateClaim() {
         ...contract,
         account: address,
         functionName: "claimTokens",
-        scopeKey: address,
         query: { enabled },
     })
 }
@@ -40,8 +39,10 @@ export function ClaimForm() {
     const { data: hash, isPending, writeContract } = useWriteContract()
     const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash, chainId, confirmations: 1 })
 
+    const claimable = user.data?.claimable ?? 0n
+
     const loading = isLoading || isPending || isConfirming
-    const disabled = loading || !Boolean(data?.request)
+    const disabled = loading || !user.isSuccess || user.isRefetching || claimable === 0n || !Boolean(data?.request)
 
     return (
         <form className="flex flex-col gap-4" onSubmit={e => {
