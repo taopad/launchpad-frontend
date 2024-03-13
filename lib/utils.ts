@@ -8,7 +8,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatAmount(amount: bigint, decimals: number) {
-    return parseFloat(formatUnits(amount, decimals)).toLocaleString()
+    return parseFloat(formatUnits(amount, decimals)).toLocaleString("en-US", {
+        maximumFractionDigits: 3,
+        useGrouping: false,
+    })
 }
 
 export const formatTimestamp = (timestamp: bigint) => {
@@ -23,6 +26,12 @@ export const formatTimestamp = (timestamp: bigint) => {
     })
 
     return `${usDate} ${utcTime}`
+}
+
+export const computeEthAmount = (amount: bigint, ethPrice: bigint, decimals: number) => {
+    const tokenUnit = 10n ** BigInt(decimals)
+
+    return (amount * ethPrice) / tokenUnit
 }
 
 export const computeTokenAmount = (amount: bigint, ethPrice: bigint, decimals: number) => {

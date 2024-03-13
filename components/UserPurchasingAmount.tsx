@@ -1,22 +1,24 @@
 "use client"
 
-import { formatUnits } from "viem"
 import { useAccount } from "wagmi"
+import { useContract } from "@/hooks/useContract"
 import { useUserData } from "@/hooks/useUserData"
 import { useTokenData } from "@/hooks/useTokenData"
 import { useUserProof } from "@/hooks/useUserProof"
 import { useNativeBalance } from "@/hooks/useNativeBalance"
 import { useProjectWatchData } from "@/hooks/useProjectWatchData"
 import { useProjectStaticData } from "@/hooks/useProjectStaticData"
-import { useConnectModal } from "@rainbow-me/rainbowkit"
+import { useConnectModal, useChainModal } from "@rainbow-me/rainbowkit"
 import { Spinner } from "@/components/Spinner"
 import { TokenSymbol } from "@/components/TokenSymbol"
-import { computeTokenAmount } from "@/lib/utils"
+import { formatAmount, computeTokenAmount } from "@/lib/utils"
 
 const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 export function UserPurchasingAmount({ amount }: { amount: bigint }) {
-    const { isConnected } = useAccount()
+    const { chainId } = useContract()
+    const { isConnected, chain } = useAccount()
+    const { openChainModal } = useChainModal()
     const { openConnectModal } = useConnectModal()
 
     const hooks = {
@@ -42,6 +44,7 @@ export function UserPurchasingAmount({ amount }: { amount: bigint }) {
     const totalPurchased = hooks.project.watch.data?.purchased ?? 0n
     const userPurchased = hooks.user.data?.purchased ?? 0n
     const decimals = hooks.token.data?.decimals ?? 0
+    const remaining = maxTokenBuy - userPurchased
     const tokenAmount = computeTokenAmount(amount, ethPrice, decimals)
 
     const loaded = isConnected
@@ -53,6 +56,10 @@ export function UserPurchasingAmount({ amount }: { amount: bigint }) {
 
     if (!isConnected) {
         return <a href="#" onClick={openConnectModal}>Connect wallet</a>
+    }
+
+    if (chain === undefined || chain.id !== chainId) {
+        return <a href="#" onClick={openChainModal}>Wrong chain</a>
     }
 
     if (!loaded) {
@@ -99,10 +106,10 @@ export function UserPurchasingAmount({ amount }: { amount: bigint }) {
         )
     }
 
-    if (minTokenBuy > tokenAmount) {
+    if (hardcap < tokenAmount + totalPurchased) {
         return (
             <span className="text-red-900">
-                Purchasing {formatUnits(tokenAmount, decimals)} <TokenSymbol /> (min: {formatUnits(minTokenBuy, decimals)})
+                Purchasing {formatAmount(tokenAmount, decimals)} <TokenSymbol /> (above hardcap)
             </span>
         )
     }
@@ -110,22 +117,22 @@ export function UserPurchasingAmount({ amount }: { amount: bigint }) {
     if (maxTokenBuy < tokenAmount + userPurchased) {
         return (
             <span className="text-red-900">
-                Purchasing {formatUnits(tokenAmount, decimals)} <TokenSymbol /> (above max purchase: {formatUnits(maxTokenBuy, decimals)})
+                Purchasing {formatAmount(tokenAmount, decimals)} <TokenSymbol /> (remaining: {formatAmount(remaining, decimals)})
             </span>
         )
     }
 
-    if (hardcap < tokenAmount + totalPurchased) {
+    if (minTokenBuy > tokenAmount) {
         return (
             <span className="text-red-900">
-                Purchasing {formatUnits(tokenAmount, decimals)} <TokenSymbol /> (above hardcap)
+                Purchasing {formatAmount(tokenAmount, decimals)} <TokenSymbol /> (min: {formatAmount(minTokenBuy, decimals)})
             </span>
         )
     }
 
     return (
         <span>
-            Purchasing {formatUnits(tokenAmount, decimals)} <TokenSymbol />
+            Purchasing {formatAmount(tokenAmount, decimals)} <TokenSymbol />
         </span>
     )
 }
