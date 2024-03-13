@@ -5,7 +5,9 @@ import { TokenEthPrice } from "@/components/TokenEthPrice"
 import { ProjectHardcap } from "@/components/ProjectHardcap"
 import { ProjectDateEnd } from "@/components/ProjectDateEnd"
 import { ProjectDateStart } from "@/components/ProjectDateStart"
+import { ProjectMaxTokenBuy } from "@/components/ProjectMaxTokenBuy"
 import { ProjectProgressBar } from "@/components/ProjectProgressBar"
+import { ProjectMaxTokenBuyEth } from "@/components/ProjectMaxTokenBuyEth"
 import { ProjectPurchasedAmount } from "@/components/ProjectPurchasedAmount"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
@@ -24,7 +26,7 @@ export function BuyCard() {
                 </div>
                 <Separator className="my-4" />
                 <div>
-                    1 <TokenSymbol /> = <TokenEthPrice /> $ETH
+                    <ProjectMaxTokenBuy /> <TokenSymbol /> = <ProjectMaxTokenBuyEth /> $ETH
                 </div>
                 <Separator className="my-4" />
                 <div className="flex flex-col gap-2">
