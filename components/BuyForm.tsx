@@ -127,13 +127,17 @@ function MaxButton({ setAmount }: { setAmount: (amount: bigint) => void }) {
     const projectStatic = useProjectStaticData()
     const { isConnected } = useAccount()
 
-    const purchased = user.data?.purchased ?? 0n
+    const hardcap = projectWatch.data?.hardcap ?? 0n
     const ethPrice = projectWatch.data?.ethPrice ?? 0n
+    const totalPurchased = projectWatch.data?.purchased ?? 0n
     const minTokenBuy = projectStatic.data?.minTokenBuy ?? 0n
     const maxTokenBuy = projectStatic.data?.maxTokenBuy ?? 0n
+    const userPurchased = user.data?.purchased ?? 0n
     const decimals = token.data?.decimals ?? 0
 
-    const remaining = maxTokenBuy - purchased
+    const remainingUser = maxTokenBuy - userPurchased
+    const remainingTotal = hardcap - totalPurchased
+    const remaining = remainingUser < remainingTotal ? remainingUser : remainingTotal
 
     const maxTokenBuyEth = computeEthAmount(remaining, ethPrice, decimals)
 
