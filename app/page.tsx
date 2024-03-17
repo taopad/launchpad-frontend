@@ -3,11 +3,11 @@ import { headers } from "next/headers"
 import { Navbar } from "@/components/Navbar"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ProjectName } from "@/components/ProjectName"
 import { WalletProvider } from "@/components/WalletProvider"
-import { ProjectProvider } from "@/components/ProjectProvider"
-import { ProjectCoverImage } from "@/components/ProjectCoverImage"
-import { ProjectTokenAddress } from "@/components/ProjectTokenAddress"
+import { ProjectName } from "@/components/presale/ProjectName"
+import { ProjectProvider } from "@/components/presale/ProjectProvider"
+import { ProjectCoverImage } from "@/components/presale/ProjectCoverImage"
+import { ProjectTokenAddress } from "@/components/presale/ProjectTokenAddress"
 
 export default function Home() {
     const cookie = headers().get("cookie")

@@ -1,5 +1,7 @@
 "use client"
 
+import { TokenSymbol } from "./TokenSymbol"
+
 import { useAccount } from "wagmi"
 import { useContract } from "@/hooks/useContract"
 import { useUserData } from "@/hooks/useUserData"
@@ -9,9 +11,8 @@ import { useNativeBalance } from "@/hooks/useNativeBalance"
 import { useProjectWatchData } from "@/hooks/useProjectWatchData"
 import { useProjectStaticData } from "@/hooks/useProjectStaticData"
 import { useConnectModal, useChainModal } from "@rainbow-me/rainbowkit"
-import { Spinner } from "@/components/Spinner"
-import { TokenSymbol } from "@/components/TokenSymbol"
 import { formatAmount, computeTokenAmount } from "@/lib/utils"
+import { Spinner } from "@/components/Spinner"
 
 const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
 

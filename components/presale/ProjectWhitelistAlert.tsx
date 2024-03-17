@@ -1,10 +1,11 @@
 "use client"
 
+import { ProjectWhitelistMinBalance } from "./ProjectWhitelistMinBalance"
+import { ProjectWhitelistBlockNumber } from "./ProjectWhitelistBlockNumber"
+
 import { ListBulletIcon } from "@radix-ui/react-icons"
 import { useProjectWatchData } from "@/hooks/useProjectWatchData"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
-import { ProjectWhitelistMinBalance } from "@/components/ProjectWhitelistMinBalance"
-import { ProjectWhitelistBlockNumber } from "@/components/ProjectWhitelistBlockNumber"
 
 const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
 

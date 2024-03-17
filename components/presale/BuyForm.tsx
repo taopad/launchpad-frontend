@@ -1,5 +1,7 @@
 "use client"
 
+import { UserPurchasingAmount } from "./UserPurchasingAmount"
+
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/Spinner"
@@ -11,7 +13,6 @@ import { useBigintInput } from "@/hooks/useBigintInput"
 import { useNativeBalance } from "@/hooks/useNativeBalance"
 import { useProjectWatchData } from "@/hooks/useProjectWatchData"
 import { useProjectStaticData } from "@/hooks/useProjectStaticData"
-import { UserPurchasingAmount } from "@/components/UserPurchasingAmount"
 import { useAccount, useSimulateContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
 import { computeTokenAmount, computeEthAmount } from "@/lib/utils"
 import abi from "@/config/abi/LaunchpadAbi"

@@ -1,9 +1,10 @@
 "use client"
 
+import { TokenSymbol } from "./TokenSymbol"
+import { UserClaimableAmount } from "./UserClaimableAmount"
+
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/Spinner"
-import { TokenSymbol } from "@/components/TokenSymbol"
-import { UserClaimableAmount } from "@/components/UserClaimableAmount"
 import { useContract } from "@/hooks/useContract"
 import { useUserData } from "@/hooks/useUserData"
 import { useAccount, useSimulateContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi"

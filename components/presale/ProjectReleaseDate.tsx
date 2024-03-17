@@ -1,7 +1,7 @@
 "use client"
 
-import { useProjectStaticData } from "@/hooks/useProjectStaticData"
 import { formatTimestamp } from "@/lib/utils"
+import { useProjectStaticData } from "@/hooks/useProjectStaticData"
 
 export function ProjectReleaseDate() {
     const project = useProjectStaticData()
