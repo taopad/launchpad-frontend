@@ -41,3 +41,9 @@ export const computeTokenAmount = (amount: bigint, ethPrice: bigint, decimals: n
 
     return (amount * tokenUnit) / ethPrice
 }
+
+export const isZeroBytes = (bytes: `0x${string}`) => {
+    const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
+    return bytes === zero
+}

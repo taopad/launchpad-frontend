@@ -14,10 +14,8 @@ import { usePresaleContract } from "@/hooks/usePresaleContract"
 import { usePresaleWatchData } from "@/hooks/usePresaleWatchData"
 import { usePresaleStaticData } from "@/hooks/usePresaleStaticData"
 import { useAccount, useSimulateContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
-import { computeTokenAmount, computeEthAmount } from "@/lib/utils"
+import { computeTokenAmount, computeEthAmount, isZeroBytes } from "@/lib/utils"
 import abi from "@/config/abi/LaunchpadAbi"
-
-const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 const useSimulateBuy = (amount: bigint) => {
     const contract = usePresaleContract()
@@ -38,7 +36,7 @@ const useSimulateBuy = (amount: bigint) => {
     const balance = hooks.balance.data?.value ?? 0n
     const minTokenBuy = hooks.presale.static.data?.minTokenBuy ?? 0n
     const maxTokenBuy = hooks.presale.static.data?.maxTokenBuy ?? 0n
-    const wlRoot = hooks.presale.watch.data?.wlRoot ?? zero
+    const wlRoot = hooks.presale.watch.data?.wlRoot ?? "0x"
     const hardcap = hooks.presale.watch.data?.hardcap ?? 0n
     const ethPrice = hooks.presale.watch.data?.ethPrice ?? 0n
     const isStarted = hooks.presale.watch.data?.isStarted ?? false
@@ -54,7 +52,7 @@ const useSimulateBuy = (amount: bigint) => {
         && hooks.presale.watch.isSuccess
         && hooks.presale.static.isSuccess
         && hooks.balance.isSuccess
-        && (wlRoot === zero || hooks.proof.isSuccess)
+        && hooks.proof.isSuccess
         && !hooks.user.isRefetching
         && !hooks.balance.isRefetching
         && amount > 0
@@ -63,8 +61,8 @@ const useSimulateBuy = (amount: bigint) => {
         && minTokenBuy <= tokenAmount
         && maxTokenBuy >= tokenAmount + userPurchased
         && hardcap >= tokenAmount + totalPurchased
-        && (wlRoot === zero || proof.length > 0)
         && isStarted && !isEnded
+        && (isZeroBytes(wlRoot) || proof.length > 0)
 
     return useSimulateContract({
         abi,

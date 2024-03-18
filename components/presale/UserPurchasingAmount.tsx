@@ -11,10 +11,8 @@ import { usePresaleContract } from "@/hooks/usePresaleContract"
 import { usePresaleWatchData } from "@/hooks/usePresaleWatchData"
 import { usePresaleStaticData } from "@/hooks/usePresaleStaticData"
 import { useConnectModal, useChainModal } from "@rainbow-me/rainbowkit"
-import { formatAmount, computeTokenAmount } from "@/lib/utils"
+import { formatAmount, computeTokenAmount, isZeroBytes } from "@/lib/utils"
 import { Spinner } from "@/components/Spinner"
-
-const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 export function UserPurchasingAmount({ amount }: { amount: bigint }) {
     const { chainId } = usePresaleContract()
@@ -37,7 +35,7 @@ export function UserPurchasingAmount({ amount }: { amount: bigint }) {
     const balance = hooks.balance.data?.value ?? 0n
     const minTokenBuy = hooks.presale.static.data?.minTokenBuy ?? 0n
     const maxTokenBuy = hooks.presale.static.data?.maxTokenBuy ?? 0n
-    const wlRoot = hooks.presale.watch.data?.wlRoot ?? zero
+    const wlRoot = hooks.presale.watch.data?.wlRoot ?? "0x"
     const hardcap = hooks.presale.watch.data?.hardcap ?? 0n
     const ethPrice = hooks.presale.watch.data?.ethPrice ?? 0n
     const isStarted = hooks.presale.watch.data?.isStarted ?? false
@@ -53,7 +51,7 @@ export function UserPurchasingAmount({ amount }: { amount: bigint }) {
         && hooks.user.isSuccess
         && hooks.presale.watch.isSuccess
         && hooks.presale.static.isSuccess
-        && (wlRoot === zero || hooks.proof.isSuccess)
+        && hooks.proof.isSuccess
 
     if (!isConnected) {
         return <a href="#" onClick={openConnectModal}>Connect wallet</a>
@@ -67,7 +65,7 @@ export function UserPurchasingAmount({ amount }: { amount: bigint }) {
         return <span><Spinner /></span>
     }
 
-    if (wlRoot !== zero && proof.length === 0) {
+    if (!isZeroBytes(wlRoot) && proof.length === 0) {
         return (
             <span className="text-red-900">
                 Not whitelisted

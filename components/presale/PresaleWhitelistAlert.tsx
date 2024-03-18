@@ -1,20 +1,18 @@
 "use client"
 
-import { PresaleWhitelistMinBalance } from "./PresaleWhitelistMinBalance"
-import { PresaleWhitelistBlockNumber } from "./PresaleWhitelistBlockNumber"
-
+import { isZeroBytes } from "@/lib/utils"
 import { ListBulletIcon } from "@radix-ui/react-icons"
 import { usePresaleWatchData } from "@/hooks/usePresaleWatchData"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
-
-const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
+import { PresaleWhitelistMinBalance } from "./PresaleWhitelistMinBalance"
+import { PresaleWhitelistBlockNumber } from "./PresaleWhitelistBlockNumber"
 
 export function PresaleWhitelistAlert() {
     const presale = usePresaleWatchData()
 
-    const root = presale.data?.wlRoot ?? zero
+    const root = presale.data?.wlRoot ?? "0x"
 
-    if (!presale.isSuccess || root === zero) {
+    if (!presale.isSuccess || isZeroBytes(root)) {
         return null
     }
 
