@@ -11,7 +11,7 @@ export function PresaleVestingDuration() {
     const days = hours / 24
 
     if (!presale.isSuccess) {
-        return <span></span>
+        return <span>&nbsp;</span>
     }
 
     return <span>{days}</span>

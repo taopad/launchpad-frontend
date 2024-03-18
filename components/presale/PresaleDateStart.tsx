@@ -9,7 +9,7 @@ export function PresaleDateStart() {
     const timestamp = presale.data?.startDate ?? 0n
 
     if (!presale.isSuccess) {
-        return <span></span>
+        return <span>&nbsp;</span>
     }
 
     return <span>{formatTimestamp(timestamp)}</span>

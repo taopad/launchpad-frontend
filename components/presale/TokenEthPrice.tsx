@@ -9,7 +9,7 @@ export function TokenEthPrice() {
     const price = presale.data?.ethPrice ?? 0n
 
     if (!presale.isSuccess) {
-        return <span></span>
+        return <span>&nbsp;</span>
     }
 
     return formatEther(price)

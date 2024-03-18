@@ -7,7 +7,7 @@ export function PresaleWhitelistBlockNumber() {
     const { blockNumber } = usePresaleWhitelist()
 
     if (blockNumber === undefined) {
-        return <span></span>
+        return <span>&nbsp;</span>
     }
 
     return (

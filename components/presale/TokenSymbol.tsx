@@ -8,7 +8,7 @@ export function TokenSymbol() {
     const symbol = token.data?.symbol ?? ""
 
     if (!token.isSuccess) {
-        return <span></span>
+        return <span>&nbsp;</span>
     }
 
     return <span>${symbol}</span>

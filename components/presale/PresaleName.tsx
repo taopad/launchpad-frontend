@@ -8,7 +8,7 @@ export function PresaleName() {
     const name = presale.data?.name ?? ""
 
     if (!presale.isSuccess) {
-        return <span></span>
+        return <span>&nbsp;</span>
     }
 
     return <span>{name}</span>

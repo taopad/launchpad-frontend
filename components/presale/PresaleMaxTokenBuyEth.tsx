@@ -18,7 +18,7 @@ export function PresaleMaxTokenBuyEth() {
     const maxTokenBuyEth = computeEthAmount(maxTokenBuy, ethPrice, decimals)
 
     if (!token.isSuccess || !presaleStatic.isSuccess) {
-        return <span></span>
+        return <span>&nbsp;</span>
     }
 
     return (

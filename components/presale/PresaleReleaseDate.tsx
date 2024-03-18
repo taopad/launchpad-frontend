@@ -11,7 +11,7 @@ export function PresaleReleaseDate() {
     const total = end + delay
 
     if (!presale.isSuccess) {
-        return <span></span>
+        return <span>&nbsp;</span>
     }
 
     return <span>{formatTimestamp(total)}</span>

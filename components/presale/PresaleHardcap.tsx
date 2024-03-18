@@ -13,7 +13,7 @@ export function PresaleHardcap() {
     const decimals = token.data?.decimals ?? 0
 
     if (!token.isSuccess || !presale.isSuccess) {
-        return <span></span>
+        return <span>&nbsp;</span>
     }
 
     return (

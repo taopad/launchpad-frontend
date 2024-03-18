@@ -13,7 +13,7 @@ export function UserClaimableAmount() {
     const decimals = token.data?.decimals ?? 0
 
     if (!user.isSuccess || !token.isSuccess) {
-        return <span></span>
+        return <span>&nbsp;</span>
     }
 
     return (

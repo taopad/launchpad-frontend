@@ -7,7 +7,7 @@ export function PresaleWhitelistMinBalance() {
     const { minBalance } = usePresaleWhitelist()
 
     if (minBalance === undefined) {
-        return <span></span>
+        return <span>&nbsp;</span>
     }
 
     return <span>{formatAmount(BigInt(minBalance), 18)}</span>
