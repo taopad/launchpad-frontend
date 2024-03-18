@@ -1,4 +1,3 @@
-import prisma from "@/db"
 import { isAddress } from "viem"
 import { headers } from "next/headers"
 import { notFound } from "next/navigation"
@@ -14,67 +13,19 @@ import { PresaleTokenAddress } from "@/components/presale/PresaleTokenAddress"
 import { PresaleWhitelistAlert } from "@/components/presale/PresaleWhitelistAlert"
 import { PresaleContractProvider } from "@/components/presale/PresaleContractProvider"
 import { PresaleWhitelistProvider } from "@/components/presale/PresaleWhitelistProvider"
+import { fetchProjectData } from "@/queries/fetchProjectData"
+import { fetchWhitelistData } from "@/queries/fetchWhitelistData"
 
 type Params = {
     chain_id: string
     launchpad: string
 }
 
-const getProjectCoverImage = async (chainId: number, launchpad: `0x${string}`) => {
-    const url = `https://raw.githubusercontent.com/taopad/launchpad-metadata/master/${chainId}/${launchpad}/cover.png`
-
-    const response = await fetch(url, { method: "HEAD" })
-
-    if (response.status === 200) {
-        return url
-    }
-}
-
-const getProjectDescription = async (chainId: number, launchpad: `0x${string}`) => {
-    const url = `https://raw.githubusercontent.com/taopad/launchpad-metadata/master/${chainId}/${launchpad}/description.md`
-
-    const response = await fetch(url)
-
-    if (response.status === 200) {
-        return await response.text()
-    }
-}
-
-const getProjectData = async (chainId: number, launchpad: `0x${string}`) => {
-    return Promise.all([
-        getProjectCoverImage(chainId, launchpad),
-        getProjectDescription(chainId, launchpad),
+const fetchPageData = async (chainId: number, launchpad: `0x${string}`) => {
+    const [[coverImageUrl, description], whitelist] = await Promise.all([
+        fetchProjectData(chainId, launchpad),
+        fetchWhitelistData(chainId, launchpad),
     ])
-}
-
-const getWhitelistData = async (chainId: number, launchpad: `0x${string}`) => {
-    const result = await prisma.whitelists.findFirst({
-        select: {
-            block_number: true,
-            min_balance: true,
-            root: true,
-        },
-        where: {
-            chain_id: { equals: chainId },
-            launchpad: { equals: launchpad, mode: "insensitive" },
-        },
-    })
-
-    return {
-        blockNumber: result?.block_number.toString(),
-        minBalance: result?.min_balance,
-        root: result ? result.root as `0x${string}` : undefined,
-    }
-}
-
-const fetchPresaleData = async (chainId: number, launchpad: `0x${string}`) => {
-    const results = await Promise.all([
-        getProjectData(chainId, launchpad),
-        getWhitelistData(chainId, launchpad),
-    ])
-
-    const [coverImageUrl, description] = results[0]
-    const whitelist = results[1]
 
     return {
         coverImageUrl,
@@ -95,7 +46,7 @@ export default async function Launchpad({ params: { chain_id, launchpad } }: { p
     }
 
     const cookie = headers().get("cookie")
-    const { coverImageUrl, description, whitelist } = await fetchPresaleData(chainId, launchpad)
+    const { coverImageUrl, description, whitelist } = await fetchPageData(chainId, launchpad)
 
     return (
         <WalletProvider chainId={chainId} cookie={cookie}>
