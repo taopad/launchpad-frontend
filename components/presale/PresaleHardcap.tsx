@@ -2,17 +2,17 @@
 
 import { formatUnits } from "viem"
 import { useTokenData } from "@/hooks/useTokenData"
-import { useProjectWatchData } from "@/hooks/useProjectWatchData"
+import { usePresaleWatchData } from "@/hooks/usePresaleWatchData"
 import { formatAmount } from "@/lib/utils"
 
-export function ProjectHardcap() {
+export function PresaleHardcap() {
     const token = useTokenData()
-    const project = useProjectWatchData()
+    const presale = usePresaleWatchData()
 
-    const amount = project.data?.hardcap ?? 0n
+    const amount = presale.data?.hardcap ?? 0n
     const decimals = token.data?.decimals ?? 0
 
-    if (!token.isSuccess || !project.isSuccess) {
+    if (!token.isSuccess || !presale.isSuccess) {
         return <span></span>
     }
 

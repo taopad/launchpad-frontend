@@ -2,17 +2,17 @@
 
 import { formatUnits } from "viem"
 import { useTokenData } from "@/hooks/useTokenData"
-import { useProjectStaticData } from "@/hooks/useProjectStaticData"
+import { usePresaleStaticData } from "@/hooks/usePresaleStaticData"
 import { formatAmount } from "@/lib/utils"
 
-export function ProjectMaxTokenBuy() {
+export function PresaleMaxTokenBuy() {
     const token = useTokenData()
-    const project = useProjectStaticData()
+    const presale = usePresaleStaticData()
 
-    const maxTokenBuy = project.data?.maxTokenBuy ?? 0n
+    const maxTokenBuy = presale.data?.maxTokenBuy ?? 0n
     const decimals = token.data?.decimals ?? 0
 
-    if (!token.isSuccess || !project.isSuccess) {
+    if (!token.isSuccess || !presale.isSuccess) {
         return <span></span>
     }
 

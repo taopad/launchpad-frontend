@@ -1,13 +1,13 @@
 import { erc20Abi } from "viem"
 import { useReadContracts } from "wagmi"
 import { usePresaleContract } from "./usePresaleContract"
-import { useProjectStaticData } from "./useProjectStaticData"
+import { usePresaleStaticData } from "./usePresaleStaticData"
 
 export function useTokenData() {
-    const project = useProjectStaticData()
+    const presale = usePresaleStaticData()
     const { chainId } = usePresaleContract()
 
-    const address = project.data?.token
+    const address = presale.data?.token
 
     return useReadContracts({
         allowFailure: false,
@@ -26,7 +26,7 @@ export function useTokenData() {
             },
         ],
         query: {
-            enabled: project.isSuccess,
+            enabled: presale.isSuccess,
             select: (data) => ({
                 symbol: data[0],
                 decimals: data[1],

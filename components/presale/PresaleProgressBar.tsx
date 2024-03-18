@@ -3,14 +3,14 @@
 import { useState, useEffect } from "react"
 
 import { Progress } from "@/components/ui/progress"
-import { useProjectWatchData } from "@/hooks/useProjectWatchData"
+import { usePresaleWatchData } from "@/hooks/usePresaleWatchData"
 
-export function ProjectProgressBar() {
-    const project = useProjectWatchData()
+export function PresaleProgressBar() {
+    const presale = usePresaleWatchData()
     const [progress, setProgress] = useState(0)
 
-    const hardcap = project.data?.hardcap ?? 0n
-    const purchased = project.data?.purchased ?? 0n
+    const hardcap = presale.data?.hardcap ?? 0n
+    const purchased = presale.data?.purchased ?? 0n
 
     useEffect(() => {
         const percent = hardcap > 0 ? Number((purchased * 100n) / hardcap) : 0

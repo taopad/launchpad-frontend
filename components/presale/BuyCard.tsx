@@ -1,12 +1,12 @@
 import { BuyForm } from "./BuyForm"
 import { TokenSymbol } from "./TokenSymbol"
-import { ProjectHardcap } from "./ProjectHardcap"
-import { ProjectDateEnd } from "./ProjectDateEnd"
-import { ProjectDateStart } from "./ProjectDateStart"
-import { ProjectMaxTokenBuy } from "./ProjectMaxTokenBuy"
-import { ProjectProgressBar } from "./ProjectProgressBar"
-import { ProjectMaxTokenBuyEth } from "./ProjectMaxTokenBuyEth"
-import { ProjectPurchasedAmount } from "./ProjectPurchasedAmount"
+import { PresaleHardcap } from "./PresaleHardcap"
+import { PresaleDateEnd } from "./PresaleDateEnd"
+import { PresaleDateStart } from "./PresaleDateStart"
+import { PresaleMaxTokenBuy } from "./PresaleMaxTokenBuy"
+import { PresaleProgressBar } from "./PresaleProgressBar"
+import { PresaleMaxTokenBuyEth } from "./PresaleMaxTokenBuyEth"
+import { PresalePurchasedAmount } from "./PresalePurchasedAmount"
 
 import { Separator } from "@/components/ui/separator"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
@@ -21,12 +21,12 @@ export function BuyCard() {
             </CardHeader>
             <CardContent>
                 <div className="flex justify-between">
-                    <span>From <ProjectDateStart /></span>
-                    <span>To <ProjectDateEnd /></span>
+                    <span>From <PresaleDateStart /></span>
+                    <span>To <PresaleDateEnd /></span>
                 </div>
                 <Separator className="my-4" />
                 <div>
-                    <ProjectMaxTokenBuy /> <TokenSymbol /> = <ProjectMaxTokenBuyEth /> $ETH
+                    <PresaleMaxTokenBuy /> <TokenSymbol /> = <PresaleMaxTokenBuyEth /> $ETH
                 </div>
                 <Separator className="my-4" />
                 <div className="flex flex-col gap-2">
@@ -35,10 +35,10 @@ export function BuyCard() {
                         <span className="muted">Hardcap</span>
                     </div>
                     <div className="flex justify-between">
-                        <ProjectPurchasedAmount />
-                        <span><ProjectHardcap /> <TokenSymbol /></span>
+                        <PresalePurchasedAmount />
+                        <span><PresaleHardcap /> <TokenSymbol /></span>
                     </div>
-                    <ProjectProgressBar />
+                    <PresaleProgressBar />
                 </div>
                 <Separator className="my-4" />
                 <BuyForm />

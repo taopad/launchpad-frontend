@@ -2,9 +2,9 @@ import { ClaimForm } from "./ClaimForm"
 import { TokenSymbol } from "./TokenSymbol"
 import { UserProgressBar } from "./UserProgressBar"
 import { UserClaimedAmount } from "./UserClaimedAmount"
-import { ProjectReleaseDate } from "./ProjectReleaseDate"
+import { PresaleReleaseDate } from "./PresaleReleaseDate"
 import { UserPurchasedAmount } from "./UserPurchasedAmount"
-import { ProjectVestingDuration } from "./ProjectVestingDuration"
+import { PresaleVestingDuration } from "./PresaleVestingDuration"
 
 import { Separator } from "@/components/ui/separator"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
@@ -18,9 +18,9 @@ export function ClaimCard() {
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                Unlock at <ProjectReleaseDate />
+                Unlock at <PresaleReleaseDate />
                 <Separator className="my-4" />
-                Vesting duration is <ProjectVestingDuration /> days
+                Vesting duration is <PresaleVestingDuration /> days
                 <Separator className="my-4" />
                 <div className="flex flex-col gap-2">
                     <div className="flex justify-between">

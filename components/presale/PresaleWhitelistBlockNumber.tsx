@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePresaleWhitelist } from "@/hooks/usePresaleWhitelist"
 
-export function ProjectWhitelistBlockNumber() {
+export function PresaleWhitelistBlockNumber() {
     const { blockNumber } = usePresaleWhitelist()
 
     if (blockNumber === undefined) {

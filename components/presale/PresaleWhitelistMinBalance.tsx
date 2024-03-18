@@ -3,7 +3,7 @@
 import { formatAmount } from "@/lib/utils"
 import { usePresaleWhitelist } from "@/hooks/usePresaleWhitelist"
 
-export function ProjectWhitelistMinBalance() {
+export function PresaleWhitelistMinBalance() {
     const { minBalance } = usePresaleWhitelist()
 
     if (minBalance === undefined) {

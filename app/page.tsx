@@ -5,8 +5,8 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { WalletProvider } from "@/components/WalletProvider"
 import { ProjectCoverImage } from "@/components/ProjectCoverImage"
-import { ProjectName } from "@/components/presale/ProjectName"
-import { ProjectTokenAddress } from "@/components/presale/ProjectTokenAddress"
+import { PresaleName } from "@/components/presale/PresaleName"
+import { PresaleTokenAddress } from "@/components/presale/PresaleTokenAddress"
 import { PresaleContractProvider } from "@/components/presale/PresaleContractProvider"
 
 export default function Home() {
@@ -25,12 +25,10 @@ export default function Home() {
                         >
                             <Card className="border p-7 bg-black shadow-lg rounded-lg">
                                 <h2 className="text-3xl text-white font-bold mb-3">
-                                    <ProjectName />
+                                    <PresaleName />
                                 </h2>
-
-                                <p className="text-base mb-4 border-b pb-4 ">
-                                    Address:
-                                    <ProjectTokenAddress />
+                                <p className="text-base mb-4 border-b pb-4 flex gap-2">
+                                    <span>Address:</span> <PresaleTokenAddress />
                                 </p>
                                 <Button
                                     variant="secondary"
@@ -52,12 +50,10 @@ export default function Home() {
                         >
                             <Card className="border p-7 bg-black shadow-lg rounded-lg">
                                 <h2 className="text-3xl text-white font-bold mb-3">
-                                    <ProjectName />
+                                    <PresaleName />
                                 </h2>
-
-                                <p className="text-base mb-4 border-b pb-4">
-                                    Address:
-                                    <ProjectTokenAddress />
+                                <p className="text-base mb-4 border-b pb-4 flex gap-2">
+                                    <span>Address:</span> <PresaleTokenAddress />
                                 </p>
                                 <Button
                                     variant="secondary"

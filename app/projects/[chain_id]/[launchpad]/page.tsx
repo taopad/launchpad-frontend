@@ -8,11 +8,11 @@ import { ProjectCoverImage } from "@/components/ProjectCoverImage"
 import { ProjectDescription } from "@/components/ProjectDescription"
 import { BuyCard } from "@/components/presale/BuyCard"
 import { ClaimCard } from "@/components/presale/ClaimCard"
-import { ProjectName } from "@/components/presale/ProjectName"
+import { PresaleName } from "@/components/presale/PresaleName"
 import { TokenSymbol } from "@/components/presale/TokenSymbol"
+import { PresaleTokenAddress } from "@/components/presale/PresaleTokenAddress"
+import { PresaleWhitelistAlert } from "@/components/presale/PresaleWhitelistAlert"
 import { PresaleContractProvider } from "@/components/presale/PresaleContractProvider"
-import { ProjectTokenAddress } from "@/components/presale/ProjectTokenAddress"
-import { ProjectWhitelistAlert } from "@/components/presale/ProjectWhitelistAlert"
 import { PresaleWhitelistProvider } from "@/components/presale/PresaleWhitelistProvider"
 
 type Params = {
@@ -105,12 +105,12 @@ export default async function Launchpad({ params: { chain_id, launchpad } }: { p
                         <Navbar />
                         <div className="flex flex-col gap-8 px-8 max-w-[1024px] w-full mx-auto">
                             <ProjectCoverImage url={coverImageUrl} />
-                            <h1><ProjectName /></h1>
                             <ProjectDescription>{description}</ProjectDescription>
+                            <h1><PresaleName /></h1>
                             <p className="flex gap-2">
-                                <span><TokenSymbol /> contract address:</span> <ProjectTokenAddress />
+                                <span><TokenSymbol /> contract address:</span> <PresaleTokenAddress />
                             </p>
-                            <ProjectWhitelistAlert />
+                            <PresaleWhitelistAlert />
                             <div className="flex flex-col lg:flex-row gap-4">
                                 <div className="flex-1">
                                     <BuyCard />

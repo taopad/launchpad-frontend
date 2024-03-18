@@ -3,7 +3,7 @@ import { useBlockNumber, useReadContracts } from "wagmi"
 import { usePresaleContract } from "./usePresaleContract"
 import abi from "@/config/abi/LaunchpadAbi"
 
-export function useProjectWatchData() {
+export function usePresaleWatchData() {
     const contract = usePresaleContract()
 
     const { data: blockNumber } = useBlockNumber({

@@ -2,22 +2,22 @@
 
 import { formatUnits } from "viem"
 import { useTokenData } from "@/hooks/useTokenData"
-import { useProjectWatchData } from "@/hooks/useProjectWatchData"
-import { useProjectStaticData } from "@/hooks/useProjectStaticData"
+import { usePresaleWatchData } from "@/hooks/usePresaleWatchData"
+import { usePresaleStaticData } from "@/hooks/usePresaleStaticData"
 import { formatAmount, computeEthAmount } from "@/lib/utils"
 
-export function ProjectMaxTokenBuyEth() {
+export function PresaleMaxTokenBuyEth() {
     const token = useTokenData()
-    const projectWatch = useProjectWatchData()
-    const projectStatic = useProjectStaticData()
+    const presaleWatch = usePresaleWatchData()
+    const presaleStatic = usePresaleStaticData()
 
-    const ethPrice = projectWatch.data?.ethPrice ?? 0n
-    const maxTokenBuy = projectStatic.data?.maxTokenBuy ?? 0n
+    const ethPrice = presaleWatch.data?.ethPrice ?? 0n
+    const maxTokenBuy = presaleStatic.data?.maxTokenBuy ?? 0n
     const decimals = token.data?.decimals ?? 0
 
     const maxTokenBuyEth = computeEthAmount(maxTokenBuy, ethPrice, decimals)
 
-    if (!token.isSuccess || !projectStatic.isSuccess) {
+    if (!token.isSuccess || !presaleStatic.isSuccess) {
         return <span></span>
     }
 

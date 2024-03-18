@@ -8,8 +8,8 @@ import { useTokenData } from "@/hooks/useTokenData"
 import { useUserProof } from "@/hooks/useUserProof"
 import { useNativeBalance } from "@/hooks/useNativeBalance"
 import { usePresaleContract } from "@/hooks/usePresaleContract"
-import { useProjectWatchData } from "@/hooks/useProjectWatchData"
-import { useProjectStaticData } from "@/hooks/useProjectStaticData"
+import { usePresaleWatchData } from "@/hooks/usePresaleWatchData"
+import { usePresaleStaticData } from "@/hooks/usePresaleStaticData"
 import { useConnectModal, useChainModal } from "@rainbow-me/rainbowkit"
 import { formatAmount, computeTokenAmount } from "@/lib/utils"
 import { Spinner } from "@/components/Spinner"
@@ -27,22 +27,22 @@ export function UserPurchasingAmount({ amount }: { amount: bigint }) {
         token: useTokenData(),
         proof: useUserProof(),
         balance: useNativeBalance(),
-        project: {
-            watch: useProjectWatchData(),
-            static: useProjectStaticData(),
+        presale: {
+            watch: usePresaleWatchData(),
+            static: usePresaleStaticData(),
         },
     }
 
     const proof = hooks.proof.data?.proof ?? []
     const balance = hooks.balance.data?.value ?? 0n
-    const minTokenBuy = hooks.project.static.data?.minTokenBuy ?? 0n
-    const maxTokenBuy = hooks.project.static.data?.maxTokenBuy ?? 0n
-    const wlRoot = hooks.project.watch.data?.wlRoot ?? zero
-    const hardcap = hooks.project.watch.data?.hardcap ?? 0n
-    const ethPrice = hooks.project.watch.data?.ethPrice ?? 0n
-    const isStarted = hooks.project.watch.data?.isStarted ?? false
-    const isEnded = hooks.project.watch.data?.isEnded ?? true
-    const totalPurchased = hooks.project.watch.data?.purchased ?? 0n
+    const minTokenBuy = hooks.presale.static.data?.minTokenBuy ?? 0n
+    const maxTokenBuy = hooks.presale.static.data?.maxTokenBuy ?? 0n
+    const wlRoot = hooks.presale.watch.data?.wlRoot ?? zero
+    const hardcap = hooks.presale.watch.data?.hardcap ?? 0n
+    const ethPrice = hooks.presale.watch.data?.ethPrice ?? 0n
+    const isStarted = hooks.presale.watch.data?.isStarted ?? false
+    const isEnded = hooks.presale.watch.data?.isEnded ?? true
+    const totalPurchased = hooks.presale.watch.data?.purchased ?? 0n
     const userPurchased = hooks.user.data?.purchased ?? 0n
     const decimals = hooks.token.data?.decimals ?? 0
     const remaining = maxTokenBuy - userPurchased
@@ -51,8 +51,8 @@ export function UserPurchasingAmount({ amount }: { amount: bigint }) {
     const loaded = isConnected
         && hooks.token.isSuccess
         && hooks.user.isSuccess
-        && hooks.project.watch.isSuccess
-        && hooks.project.static.isSuccess
+        && hooks.presale.watch.isSuccess
+        && hooks.presale.static.isSuccess
         && (wlRoot === zero || hooks.proof.isSuccess)
 
     if (!isConnected) {

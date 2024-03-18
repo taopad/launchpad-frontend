@@ -1,14 +1,14 @@
 "use client"
 
 import { formatEther } from "viem"
-import { useProjectWatchData } from "@/hooks/useProjectWatchData"
+import { usePresaleWatchData } from "@/hooks/usePresaleWatchData"
 
 export function TokenEthPrice() {
-    const project = useProjectWatchData()
+    const presale = usePresaleWatchData()
 
-    const price = project.data?.ethPrice ?? 0n
+    const price = presale.data?.ethPrice ?? 0n
 
-    if (!project.isSuccess) {
+    if (!presale.isSuccess) {
         return <span></span>
     }
 

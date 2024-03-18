@@ -11,8 +11,8 @@ import { useUserProof } from "@/hooks/useUserProof"
 import { useBigintInput } from "@/hooks/useBigintInput"
 import { useNativeBalance } from "@/hooks/useNativeBalance"
 import { usePresaleContract } from "@/hooks/usePresaleContract"
-import { useProjectWatchData } from "@/hooks/useProjectWatchData"
-import { useProjectStaticData } from "@/hooks/useProjectStaticData"
+import { usePresaleWatchData } from "@/hooks/usePresaleWatchData"
+import { usePresaleStaticData } from "@/hooks/usePresaleStaticData"
 import { useAccount, useSimulateContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
 import { computeTokenAmount, computeEthAmount } from "@/lib/utils"
 import abi from "@/config/abi/LaunchpadAbi"
@@ -28,22 +28,22 @@ const useSimulateBuy = (amount: bigint) => {
         token: useTokenData(),
         proof: useUserProof(),
         balance: useNativeBalance(),
-        project: {
-            watch: useProjectWatchData(),
-            static: useProjectStaticData(),
+        presale: {
+            watch: usePresaleWatchData(),
+            static: usePresaleStaticData(),
         },
     }
 
     const proof = hooks.proof.data?.proof ?? []
     const balance = hooks.balance.data?.value ?? 0n
-    const minTokenBuy = hooks.project.static.data?.minTokenBuy ?? 0n
-    const maxTokenBuy = hooks.project.static.data?.maxTokenBuy ?? 0n
-    const wlRoot = hooks.project.watch.data?.wlRoot ?? zero
-    const hardcap = hooks.project.watch.data?.hardcap ?? 0n
-    const ethPrice = hooks.project.watch.data?.ethPrice ?? 0n
-    const isStarted = hooks.project.watch.data?.isStarted ?? false
-    const isEnded = hooks.project.watch.data?.isEnded ?? true
-    const totalPurchased = hooks.project.watch.data?.purchased ?? 0n
+    const minTokenBuy = hooks.presale.static.data?.minTokenBuy ?? 0n
+    const maxTokenBuy = hooks.presale.static.data?.maxTokenBuy ?? 0n
+    const wlRoot = hooks.presale.watch.data?.wlRoot ?? zero
+    const hardcap = hooks.presale.watch.data?.hardcap ?? 0n
+    const ethPrice = hooks.presale.watch.data?.ethPrice ?? 0n
+    const isStarted = hooks.presale.watch.data?.isStarted ?? false
+    const isEnded = hooks.presale.watch.data?.isEnded ?? true
+    const totalPurchased = hooks.presale.watch.data?.purchased ?? 0n
     const userPurchased = hooks.user.data?.purchased ?? 0n
     const decimals = hooks.token.data?.decimals ?? 0
     const tokenAmount = computeTokenAmount(amount, ethPrice, decimals)
@@ -51,8 +51,8 @@ const useSimulateBuy = (amount: bigint) => {
     const enabled = isConnected
         && hooks.token.isSuccess
         && hooks.user.isSuccess
-        && hooks.project.watch.isSuccess
-        && hooks.project.static.isSuccess
+        && hooks.presale.watch.isSuccess
+        && hooks.presale.static.isSuccess
         && hooks.balance.isSuccess
         && (wlRoot === zero || hooks.proof.isSuccess)
         && !hooks.user.isRefetching
@@ -124,15 +124,15 @@ export function BuyForm() {
 function MaxButton({ setAmount }: { setAmount: (amount: bigint) => void }) {
     const user = useUserData()
     const token = useTokenData()
-    const projectWatch = useProjectWatchData()
-    const projectStatic = useProjectStaticData()
+    const presaleWatch = usePresaleWatchData()
+    const presaleStatic = usePresaleStaticData()
     const { isConnected } = useAccount()
 
-    const hardcap = projectWatch.data?.hardcap ?? 0n
-    const ethPrice = projectWatch.data?.ethPrice ?? 0n
-    const totalPurchased = projectWatch.data?.purchased ?? 0n
-    const minTokenBuy = projectStatic.data?.minTokenBuy ?? 0n
-    const maxTokenBuy = projectStatic.data?.maxTokenBuy ?? 0n
+    const hardcap = presaleWatch.data?.hardcap ?? 0n
+    const ethPrice = presaleWatch.data?.ethPrice ?? 0n
+    const totalPurchased = presaleWatch.data?.purchased ?? 0n
+    const minTokenBuy = presaleStatic.data?.minTokenBuy ?? 0n
+    const maxTokenBuy = presaleStatic.data?.maxTokenBuy ?? 0n
     const userPurchased = user.data?.purchased ?? 0n
     const decimals = token.data?.decimals ?? 0
 
@@ -145,8 +145,8 @@ function MaxButton({ setAmount }: { setAmount: (amount: bigint) => void }) {
     const disabled = !isConnected
         || !user.isSuccess
         || !token.isSuccess
-        || !projectWatch.isSuccess
-        || !projectStatic.isSuccess
+        || !presaleWatch.isSuccess
+        || !presaleStatic.isSuccess
         || user.isRefetching
         || remaining < minTokenBuy
 
