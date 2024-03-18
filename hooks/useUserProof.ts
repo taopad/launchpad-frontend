@@ -1,13 +1,13 @@
 import { useAccount } from "wagmi"
 import { useQuery } from "@tanstack/react-query"
-import { useContract } from "./useContract"
+import { usePresaleContract } from "./usePresaleContract"
 
 type UserProof = {
     proof: `0x${string}`[]
 }
 
 export const useUserProof = () => {
-    const contract = useContract()
+    const contract = usePresaleContract()
     const { isConnected, address } = useAccount()
 
     const chainId = contract.chainId ?? 0
@@ -23,7 +23,7 @@ export const useUserProof = () => {
         enabled,
         queryKey: ["user-proof", chainId, launchpad, userAddress],
         queryFn: async (): Promise<UserProof> => {
-            const url = `/api/whitelists/${chainId}/${launchpad}/proofs/${address}`
+            const url = `/api/whitelists/${chainId}/${launchpad}/proofs/${userAddress}`
 
             const response = await fetch(url)
 

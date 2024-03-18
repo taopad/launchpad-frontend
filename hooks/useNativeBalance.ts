@@ -1,9 +1,9 @@
 import { useAccount, useBalance } from "wagmi"
-import { useContract } from "./useContract"
+import { usePresaleContract } from "./usePresaleContract"
 
 export function useNativeBalance() {
-    const { chainId } = useContract()
     const { address } = useAccount()
+    const { chainId } = usePresaleContract()
 
     return useBalance({ chainId, address })
 }

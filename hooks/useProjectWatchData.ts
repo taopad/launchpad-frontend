@@ -1,10 +1,10 @@
 import { useEffect } from "react"
 import { useBlockNumber, useReadContracts } from "wagmi"
-import { useContract } from "./useContract"
+import { usePresaleContract } from "./usePresaleContract"
 import abi from "@/config/abi/LaunchpadAbi"
 
 export function useProjectWatchData() {
-    const contract = useContract()
+    const contract = usePresaleContract()
 
     const { data: blockNumber } = useBlockNumber({
         chainId: contract.chainId,

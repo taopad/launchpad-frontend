@@ -1,9 +1,9 @@
 import { useReadContracts } from "wagmi"
-import { useContract } from "./useContract"
+import { usePresaleContract } from "./usePresaleContract"
 import abi from "@/config/abi/LaunchpadAbi"
 
 export function useProjectStaticData() {
-    const contract = useContract()
+    const contract = usePresaleContract()
 
     return useReadContracts({
         allowFailure: false,

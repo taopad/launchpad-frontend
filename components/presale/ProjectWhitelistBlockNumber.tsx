@@ -1,14 +1,12 @@
 "use client"
 
 import Link from "next/link"
-import { useWhitelist } from "@/hooks/useWhitelist"
+import { usePresaleWhitelist } from "@/hooks/usePresaleWhitelist"
 
 export function ProjectWhitelistBlockNumber() {
-    const whitelist = useWhitelist()
+    const { blockNumber } = usePresaleWhitelist()
 
-    const blockNumber = whitelist.data?.blockNumber ?? 0n
-
-    if (!whitelist.isSuccess) {
+    if (blockNumber === undefined) {
         return <span></span>
     }
 

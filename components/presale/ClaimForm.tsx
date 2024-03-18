@@ -5,13 +5,13 @@ import { UserClaimableAmount } from "./UserClaimableAmount"
 
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/Spinner"
-import { useContract } from "@/hooks/useContract"
 import { useUserData } from "@/hooks/useUserData"
+import { usePresaleContract } from "@/hooks/usePresaleContract"
 import { useAccount, useSimulateContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
 import abi from "@/config/abi/LaunchpadAbi"
 
 function useSimulateClaim() {
-    const contract = useContract()
+    const contract = usePresaleContract()
     const { isConnected, address } = useAccount()
 
     const user = useUserData()
@@ -35,7 +35,7 @@ function useSimulateClaim() {
 export function ClaimForm() {
     const user = useUserData()
 
-    const { chainId } = useContract()
+    const { chainId } = usePresaleContract()
     const { data, isLoading } = useSimulateClaim()
     const { data: hash, isPending, writeContract } = useWriteContract()
     const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash, chainId, confirmations: 1 })

@@ -3,11 +3,11 @@
 import { TokenSymbol } from "./TokenSymbol"
 
 import { useAccount } from "wagmi"
-import { useContract } from "@/hooks/useContract"
 import { useUserData } from "@/hooks/useUserData"
 import { useTokenData } from "@/hooks/useTokenData"
 import { useUserProof } from "@/hooks/useUserProof"
 import { useNativeBalance } from "@/hooks/useNativeBalance"
+import { usePresaleContract } from "@/hooks/usePresaleContract"
 import { useProjectWatchData } from "@/hooks/useProjectWatchData"
 import { useProjectStaticData } from "@/hooks/useProjectStaticData"
 import { useConnectModal, useChainModal } from "@rainbow-me/rainbowkit"
@@ -17,7 +17,7 @@ import { Spinner } from "@/components/Spinner"
 const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 export function UserPurchasingAmount({ amount }: { amount: bigint }) {
-    const { chainId } = useContract()
+    const { chainId } = usePresaleContract()
     const { isConnected, chain } = useAccount()
     const { openChainModal } = useChainModal()
     const { openConnectModal } = useConnectModal()

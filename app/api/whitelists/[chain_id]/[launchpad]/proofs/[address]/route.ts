@@ -1,4 +1,5 @@
 import prisma from "@/db"
+import { notFound } from "next/navigation"
 import { isAddress } from "viem"
 
 type Params = {
@@ -13,15 +14,15 @@ export async function GET(request: Request, { params: { chain_id, launchpad, add
     const chainId = parseInt(chain_id)
 
     if (isNaN(chainId)) {
-        return Response.error()
+        return notFound()
     }
 
     if (!isAddress(launchpad)) {
-        return Response.error()
+        return notFound()
     }
 
     if (!isAddress(address)) {
-        return Response.error()
+        return notFound()
     }
 
     const result = await prisma.whitelists_proofs.findFirst({

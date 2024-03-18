@@ -5,12 +5,12 @@ import { UserPurchasingAmount } from "./UserPurchasingAmount"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/Spinner"
-import { useContract } from "@/hooks/useContract"
 import { useUserData } from "@/hooks/useUserData"
 import { useTokenData } from "@/hooks/useTokenData"
 import { useUserProof } from "@/hooks/useUserProof"
 import { useBigintInput } from "@/hooks/useBigintInput"
 import { useNativeBalance } from "@/hooks/useNativeBalance"
+import { usePresaleContract } from "@/hooks/usePresaleContract"
 import { useProjectWatchData } from "@/hooks/useProjectWatchData"
 import { useProjectStaticData } from "@/hooks/useProjectStaticData"
 import { useAccount, useSimulateContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
@@ -20,7 +20,7 @@ import abi from "@/config/abi/LaunchpadAbi"
 const zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 const useSimulateBuy = (amount: bigint) => {
-    const contract = useContract()
+    const contract = usePresaleContract()
     const { isConnected, address } = useAccount()
 
     const hooks = {
@@ -82,7 +82,7 @@ export function BuyForm() {
     const balance = useNativeBalance()
     const amount = useBigintInput(0n)
 
-    const { chainId } = useContract()
+    const { chainId } = usePresaleContract()
     const { data, isLoading } = useSimulateBuy(amount.value)
     const { data: hash, isPending, writeContract } = useWriteContract()
     const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash, chainId, confirmations: 1 })

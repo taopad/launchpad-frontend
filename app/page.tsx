@@ -4,10 +4,10 @@ import { Navbar } from "@/components/Navbar"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { WalletProvider } from "@/components/WalletProvider"
+import { ProjectCoverImage } from "@/components/ProjectCoverImage"
 import { ProjectName } from "@/components/presale/ProjectName"
-import { ProjectProvider } from "@/components/presale/ProjectProvider"
-import { ProjectCoverImage } from "@/components/presale/ProjectCoverImage"
 import { ProjectTokenAddress } from "@/components/presale/ProjectTokenAddress"
+import { PresaleContractProvider } from "@/components/presale/PresaleContractProvider"
 
 export default function Home() {
     const cookie = headers().get("cookie")
@@ -17,15 +17,9 @@ export default function Home() {
             <div className="flex flex-col gap-8">
                 <Navbar />
                 <div className="flex flex-col gap-8 px-8 max-w-[1024px] w-full mx-auto">
-                    <ProjectProvider
-                        chainId={1}
-                        address="0x481dacbf63363d142d761C6DE51da05F10A2b70D"
-                    >
-                        <ProjectCoverImage />
-                    </ProjectProvider>
-
+                    <ProjectCoverImage url="https://raw.githubusercontent.com/taopad/launchpad-metadata/master/1/0x116Bb71512f8E9f76Df2840C7CED2B5Ee06f9C85/cover.png" />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <ProjectProvider
+                        <PresaleContractProvider
                             chainId={1}
                             address="0x116Bb71512f8E9f76Df2840C7CED2B5Ee06f9C85"
                         >
@@ -51,8 +45,8 @@ export default function Home() {
                                     </Link>
                                 </Button>
                             </Card>
-                        </ProjectProvider>
-                        <ProjectProvider
+                        </PresaleContractProvider>
+                        <PresaleContractProvider
                             chainId={1}
                             address="0x481dacbf63363d142d761C6DE51da05F10A2b70D"
                         >
@@ -78,7 +72,7 @@ export default function Home() {
                                     </Link>
                                 </Button>
                             </Card>
-                        </ProjectProvider>
+                        </PresaleContractProvider>
                     </div>
                 </div>
             </div>

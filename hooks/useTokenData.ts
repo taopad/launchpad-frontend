@@ -1,11 +1,11 @@
 import { erc20Abi } from "viem"
 import { useReadContracts } from "wagmi"
-import { useContract } from "./useContract"
+import { usePresaleContract } from "./usePresaleContract"
 import { useProjectStaticData } from "./useProjectStaticData"
 
 export function useTokenData() {
-    const { chainId } = useContract()
     const project = useProjectStaticData()
+    const { chainId } = usePresaleContract()
 
     const address = project.data?.token
 

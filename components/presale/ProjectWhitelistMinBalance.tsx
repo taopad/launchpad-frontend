@@ -1,16 +1,14 @@
 "use client"
 
 import { formatAmount } from "@/lib/utils"
-import { useWhitelist } from "@/hooks/useWhitelist"
+import { usePresaleWhitelist } from "@/hooks/usePresaleWhitelist"
 
 export function ProjectWhitelistMinBalance() {
-    const whitelist = useWhitelist()
+    const { minBalance } = usePresaleWhitelist()
 
-    const minBalance = whitelist.data?.minBalance ?? 0n
-
-    if (!whitelist.isSuccess) {
+    if (minBalance === undefined) {
         return <span></span>
     }
 
-    return <span>{formatAmount(minBalance, 18)}</span>
+    return <span>{formatAmount(BigInt(minBalance), 18)}</span>
 }
