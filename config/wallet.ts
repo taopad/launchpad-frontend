@@ -22,7 +22,7 @@ const chains = [mainnet, testnet]
 const rpcs = {
     [mainnet.id]: isDev
         ? "https://rpc.ankr.com/eth"
-        : "https://eth-mainnet.g.alchemy.com/v2/oW_Y3js1QPWpFXnCIQm-z56vysAdoppY",
+        : "https://eth-mainnet.g.alchemy.com/v2/Hvky-afpKHoxm1AgXx7sLw_Sw8h7bGh0",
     [testnet.id]: testnet.rpcUrls.public.http[0]
 }
 
