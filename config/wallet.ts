@@ -1,6 +1,6 @@
 import "@rainbow-me/rainbowkit/styles.css"
 
-import { Chain, mainnet } from "wagmi/chains"
+import { mainnet } from "wagmi/chains"
 import { testnet } from "@/config/testnet"
 import { createConfig, createStorage, cookieStorage, http, fallback } from "wagmi"
 import { connectorsForWallets } from "@rainbow-me/rainbowkit"
@@ -15,16 +15,8 @@ import {
 
 const appName = "Taopad launchpad"
 const projectId = "031d4ad6ce63b830ab346fb92b96f328"
-const isDev = process.env.NODE_ENV === "development"
 
 const chains = [mainnet, testnet]
-
-const rpcs = {
-    [mainnet.id]: isDev
-        ? "https://rpc.ankr.com/eth"
-        : "https://eth-mainnet.g.alchemy.com/v2/Hvky-afpKHoxm1AgXx7sLw_Sw8h7bGh0",
-    [testnet.id]: testnet.rpcUrls.public.http[0]
-}
 
 const connectors = connectorsForWallets(
     [
@@ -43,14 +35,21 @@ const connectors = connectorsForWallets(
     { appName, projectId }
 )
 
+const transports = {
+    [mainnet.id]: fallback([
+        http("https://eth-mainnet.g.alchemy.com/v2/Hvky-afpKHoxm1AgXx7sLw_Sw8h7bGh0"),
+        http("https://rpc.ankr.com/eth"),
+        http(),
+    ]),
+    [testnet.id]: http(testnet.rpcUrls.public.http[0]),
+}
+
 export const config = createConfig({
     ssr: true,
-    storage: createStorage({ storage: cookieStorage, key: "wagmi-all" }),
     connectors,
+    transports,
+    storage: createStorage({ storage: cookieStorage, key: "wagmi-all" }),
     chains: [mainnet],
-    transports: {
-        [mainnet.id]: fallback([http(rpcs[mainnet.id]), http()]),
-    },
 })
 
 export const getConfig = (chainId: number) => {
@@ -62,12 +61,9 @@ export const getConfig = (chainId: number) => {
 
     return createConfig({
         ssr: true,
-        storage: createStorage({ storage: cookieStorage, key: `wagmi-${chainId}` }),
         connectors,
+        transports,
+        storage: createStorage({ storage: cookieStorage, key: `wagmi-${chainId}` }),
         chains: [chain],
-        transports: {
-            [mainnet.id]: fallback([http(rpcs[mainnet.id]), http()]),
-            [testnet.id]: http(),
-        },
     })
 }
