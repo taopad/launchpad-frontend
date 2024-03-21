@@ -53,8 +53,6 @@ const useSimulateBuy = (amount: bigint) => {
         && hooks.presale.static.isSuccess
         && hooks.balance.isSuccess
         && hooks.proof.isSuccess
-        && !hooks.user.isRefetching
-        && !hooks.balance.isRefetching
         && amount > 0
         && tokenAmount > 0
         && balance >= amount
@@ -76,8 +74,6 @@ const useSimulateBuy = (amount: bigint) => {
 }
 
 export function BuyForm() {
-    const user = useUserData()
-    const balance = useNativeBalance()
     const amount = useBigintInput(0n)
 
     const { chainId } = usePresaleContract()
@@ -93,8 +89,6 @@ export function BuyForm() {
             e.preventDefault()
             writeContract(data!.request, {
                 onSuccess: () => {
-                    user.refetch()
-                    balance.refetch()
                     amount.reset()
                 }
             })
@@ -145,7 +139,6 @@ function MaxButton({ setAmount }: { setAmount: (amount: bigint) => void }) {
         || !token.isSuccess
         || !presaleWatch.isSuccess
         || !presaleStatic.isSuccess
-        || user.isRefetching
         || remaining < minTokenBuy
 
     return (

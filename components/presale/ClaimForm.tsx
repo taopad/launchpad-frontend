@@ -48,7 +48,7 @@ export function ClaimForm() {
     return (
         <form className="flex flex-col gap-4" onSubmit={e => {
             e.preventDefault()
-            writeContract(data!.request, { onSuccess: () => user.refetch() })
+            writeContract(data!.request)
         }}>
             <Button type="submit" variant="secondary" className="w-full" disabled={disabled}>
                 <Spinner loading={loading} /> Claim

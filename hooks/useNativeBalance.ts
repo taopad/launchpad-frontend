@@ -1,9 +1,16 @@
-import { useAccount, useBalance } from "wagmi"
+import { useEffect } from "react"
 import { usePresaleContract } from "./usePresaleContract"
+import { useAccount, useBlockNumber, useBalance } from "wagmi"
 
 export function useNativeBalance() {
     const { address } = useAccount()
     const { chainId } = usePresaleContract()
 
-    return useBalance({ chainId, address })
+    const hook = useBalance({ chainId, address })
+
+    const { data: blockNumber } = useBlockNumber({ chainId, watch: true })
+
+    useEffect(() => { hook.refetch() }, [blockNumber])
+
+    return hook
 }

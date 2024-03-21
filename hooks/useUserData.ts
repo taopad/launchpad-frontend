@@ -1,13 +1,13 @@
-import { useAccount, useReadContracts } from "wagmi"
+import { useEffect } from "react"
 import { usePresaleContract } from "./usePresaleContract"
+import { useAccount, useBlockNumber, useReadContracts } from "wagmi"
 import abi from "@/config/abi/LaunchpadAbi"
 
 export function useUserData() {
     const contract = usePresaleContract()
     const { isConnected, address } = useAccount()
 
-    return useReadContracts({
-        scopeKey: address,
+    const hook = useReadContracts({
         allowFailure: false,
         contracts: [
             {
@@ -38,4 +38,13 @@ export function useUserData() {
             }),
         },
     })
+
+    const { data: blockNumber } = useBlockNumber({
+        chainId: contract.chainId,
+        watch: true,
+    })
+
+    useEffect(() => { hook.refetch() }, [blockNumber])
+
+    return hook;
 }

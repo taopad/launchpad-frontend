@@ -6,11 +6,6 @@ import abi from "@/config/abi/LaunchpadAbi"
 export function usePresaleWatchData() {
     const contract = usePresaleContract()
 
-    const { data: blockNumber } = useBlockNumber({
-        chainId: contract.chainId,
-        watch: true,
-    })
-
     const hook = useReadContracts({
         allowFailure: false,
         contracts: [
@@ -61,6 +56,11 @@ export function usePresaleWatchData() {
                 isEnded: data[6],
             }),
         },
+    })
+
+    const { data: blockNumber } = useBlockNumber({
+        chainId: contract.chainId,
+        watch: true,
     })
 
     useEffect(() => { hook.refetch() }, [blockNumber])
