@@ -1,5 +1,7 @@
 "use client"
 
+import "@rainbow-me/rainbowkit/styles.css"
+
 import { useState } from "react"
 import { WagmiProvider, cookieToInitialState } from "wagmi"
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit"

@@ -1,5 +1,3 @@
-import "@rainbow-me/rainbowkit/styles.css"
-
 import { mainnet } from "wagmi/chains"
 import { testnet } from "@/config/testnet"
 import { createConfig, createStorage, cookieStorage, http, fallback } from "wagmi"
