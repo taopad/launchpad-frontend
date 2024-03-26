@@ -20,7 +20,6 @@ function useSimulateClaim() {
 
     const enabled = isConnected
         && user.isSuccess
-        && !user.isRefetching
         && claimable > 0
 
     return useSimulateContract({
@@ -43,7 +42,7 @@ export function ClaimForm() {
     const claimable = user.data?.claimable ?? 0n
 
     const loading = isLoading || isPending || isConfirming
-    const disabled = loading || !user.isSuccess || user.isRefetching || claimable === 0n || !Boolean(data?.request)
+    const disabled = loading || !user.isSuccess || claimable === 0n || !Boolean(data?.request)
 
     return (
         <form className="flex flex-col gap-4" onSubmit={e => {

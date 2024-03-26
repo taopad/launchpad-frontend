@@ -93,15 +93,17 @@ export function BuyForm() {
                 }
             })
         }}>
-            <div className="flex gap-2">
-                <Input
-                    type="text"
-                    placeholder="$ETH amount"
-                    value={amount.valueStr}
-                    onChange={e => amount.setValueStr(e.target.value.trim())}
-                    min={0}
-                />
-                <MaxButton setAmount={amount.setValue} />
+            <div className="flex flex-col gap-4 lg:flex-row lg:gap-2">
+                <div className="flex gap-2 flex-1">
+                    <Input
+                        type="text"
+                        placeholder="$ETH amount"
+                        value={amount.valueStr}
+                        onChange={e => amount.setValueStr(e.target.value.trim())}
+                        min={0}
+                    />
+                    <MaxButton setAmount={amount.setValue} />
+                </div>
                 <Button type="submit" variant="secondary" disabled={disabled}>
                     <Spinner loading={loading} /> Purchase
                 </Button>
